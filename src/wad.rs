@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::path::Path;
 use std::io::*;
+use std::str;
 
 pub enum WadType {
     IWAD,
@@ -45,7 +46,8 @@ impl Header {
         file.read_exact(&mut header_raw).unwrap_or_else(|e|
             panic!("unable to read the WAD header {}", e));
 
-
+        let f = str::from_utf8(&header_raw[0..4]).unwrap();
+        println!("This is the header {:?}", f);
         true
     }
 }
