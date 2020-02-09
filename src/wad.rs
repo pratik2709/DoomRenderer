@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::path::Path;
+use std::io::*;
 
 pub enum WadType {
     IWAD,
@@ -34,8 +35,17 @@ pub struct Directory {
 }
 
 impl Header {
-    fn openAndLoad(mut file: &File) -> bool {
+    fn from_file(mut file: &File) -> bool {
         println!("loading WAD file..");
+        // move the cursor 0 bytes from the start of the file
+        file.seek(SeekFrom::Start(0)).unwrap_or_else(|e|
+            panic!("unable to seek from the start od the file {}", e));
+
+        let mut header_raw: [u8; 12] = [0;12];
+        file.read_exact(&mut header_raw).unwrap_or_else(|e|
+            panic!("unable to read the WAD header {}", e));
+
+
         true
     }
 }
@@ -53,10 +63,7 @@ impl Wad{
         let wadFile = File::open(path).unwrap_or_else(|e| {
            panic!("unable to open th WAD file {}", e)
         });
-
-//        Wad{
-//
-//        }
+        let header = Header::from_file(&wadFile);
 
     }
 }
