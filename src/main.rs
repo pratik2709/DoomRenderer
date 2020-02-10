@@ -1,4 +1,5 @@
 include!("wad.rs");
+include!("util.rs");
 
 
 fn main() {

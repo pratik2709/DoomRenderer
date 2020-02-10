@@ -48,6 +48,16 @@ impl Header {
 
         let f = str::from_utf8(&header_raw[0..4]).unwrap();
         println!("This is the header {:?}", f);
+
+        let wadType = match &header_raw[0..4] {
+            b"IWAD" => WadType::IWAD,
+            b"PWAD" => WadType::PWAD,
+            b"WAD2" => WadType::WAD2,
+            _ => panic!("could not read header.")
+        };
+
+
+
         true
     }
 }
