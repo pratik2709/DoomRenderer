@@ -11,13 +11,7 @@ pub enum WadType {
 }
 
 
-//
-//struct Directory
-//{
-//    uint32_t LumpOffset;
-//    uint32_t LumpSize;
-//    char LumpName[9];
-//};
+
 
 #[derive(Debug)]
 pub struct Header {
@@ -26,11 +20,7 @@ pub struct Header {
     directoryOffset: usize,
 }
 
-pub struct Directory {
-    lumpOffset: u32,
-    lumpSize: u32,
-    lumpName: [char; 9],
-}
+
 
 impl Header {
     fn from_file(mut file: &File) -> Header {
@@ -57,13 +47,13 @@ impl Header {
         // thus its actual size depends on the architecture
         // your are compiling your program for.
         let num_lumps: usize = u8_to_u32(&header_raw[4..8]) as usize;
-        let directory_size: usize = u8_to_u32(&header_raw[8..12]) as usize;
+        let directoryOffset: usize = u8_to_u32(&header_raw[8..12]) as usize;
 
 
         Header{
             wadType,
             directoryCount: num_lumps,
-            directoryOffset: directory_size,
+            directoryOffset,
         }
     }
 }
@@ -83,6 +73,8 @@ impl Wad{
         });
         let header = Header::from_file(&wadFile);
         println!("{:?}", header)
+
+        // todo: implement a directory
 
     }
 }
