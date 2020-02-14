@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Directory {
     lumpOffset: u32,
     lumpSize: u32,
@@ -7,11 +8,20 @@ pub struct Directory {
 impl Directory{
 
     fn readDirectoryData(mut file: &File, header: &Header){
-        file.seek(SeekFrom::Start(header::directoryOffset)).unwrap_or_else(|e|
+        file.seek(SeekFrom::Start(header.getHeader() as u64)).unwrap_or_else(|e|
             panic!("unable to read directory data {}", e));
 
-        let raw_data = [u8;12];
+        let mut raw_data:[u8;16] = [0;16];
+        //Read the exact number of bytes required to fill buf.
+        file.read_exact(&mut raw_data)
+            .unwrap_or_else(|e|
+            panic!("unable to read lump data {}", e));
 
+        let lumpOffset = u8_to_u32(&raw_data[0..4]) as usize;
+        let lumpSize = u8_to_u32(&raw_data[4..8]) as usize;
+        let lumpName = u8_to_u32(&raw_data[8..12]) as usize;
+
+        println!("{:?}, {:?}, {:?}", lumpOffset, lumpName, lumpSize);
     }
 
 }

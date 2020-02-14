@@ -11,8 +11,6 @@ pub enum WadType {
 }
 
 
-
-
 #[derive(Debug)]
 pub struct Header {
     wadType: WadType,
@@ -56,6 +54,10 @@ impl Header {
             directoryOffset,
         }
     }
+
+    pub fn getHeader(&self) -> usize{
+        self.directoryOffset
+    }
 }
 
 pub struct Wad{
@@ -72,9 +74,10 @@ impl Wad{
            panic!("unable to open th WAD file {}", e)
         });
         let header = Header::from_file(&wadFile);
-        println!("{:?}", header)
+        println!("{:?}", header);
 
         // todo: implement a directory
+        let directory = Directory::readDirectoryData(&wadFile, &header);
 
     }
 }
