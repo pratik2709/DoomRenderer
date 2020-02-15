@@ -60,13 +60,14 @@ impl Header {
     }
 }
 
+#[derive(Debug)]
 pub struct Wad{
     header: Header,
     directory: Directory
 }
 
 impl Wad{
-    pub fn from_path(path: &str){
+    pub fn from_path(path: &str) -> Wad{
         println!("here");
         // & str his is called a string slice, an immutable view of a string
         let path = Path::new(path);
@@ -78,6 +79,10 @@ impl Wad{
 
         // todo: implement a directory
         let directory = Directory::readDirectoryData(&wadFile, &header);
+        Wad{
+            header,
+            directory
+        }
 
     }
 }
