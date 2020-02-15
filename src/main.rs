@@ -1,12 +1,13 @@
 include!("wad.rs");
 include!("util.rs");
 include!("directory.rs");
+include!("header.rs");
+include!("dataTypes.rs");
 
 
 fn main() {
     println!("Hello, world!");
     let w = Wad::from_path("./DOOM1.wad");
-//    println!("{:?}", w);
 }
 
 mod tests {

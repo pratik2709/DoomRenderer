@@ -1,10 +1,3 @@
-#[derive(Debug)]
-pub struct Directory {
-    lumpOffset: usize,
-    lumpSize: usize,
-    lumpName: String,
-}
-
 impl Directory{
 
     fn readDirectoryData(mut file: &File, header: &Header, offset: usize) -> Directory{
