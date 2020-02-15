@@ -6,7 +6,7 @@ use std::str;
 impl Wad{
     pub fn from_path(path: &str) -> Wad{
         println!("here");
-        // & str his is called a string slice, an immutable view of a string
+        // & str is called a string slice, an immutable view of a string
         let path = Path::new(path);
         let wadFile = File::open(path).unwrap_or_else(|e| {
            panic!("unable to open th WAD file {}", e)
