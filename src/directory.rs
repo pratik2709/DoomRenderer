@@ -7,8 +7,8 @@ pub struct Directory {
 
 impl Directory{
 
-    fn readDirectoryData(mut file: &File, header: &Header) -> Directory{
-        file.seek(SeekFrom::Start(header.getHeader() as u64)).unwrap_or_else(|e|
+    fn readDirectoryData(mut file: &File, header: &Header, offset: usize) -> Directory{
+        file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to read directory data {}", e));
 
         let mut raw_data:[u8;16] = [0;16];
@@ -22,8 +22,12 @@ impl Directory{
 
         //convert to utf8 (ascii string)
 
-        let lumpName:String = String::from_utf8(raw_data[8..16].to_vec())
+        let lumpNameIntermediate:String = String::from_utf8(raw_data[8..16].to_vec())
             .unwrap_or_else(|e| panic!("unable to ascii string {}",e));
+
+        // char::from(0) returns null char according to ascii table,(100 is d)
+        //trim
+        let lumpName: String = lumpNameIntermediate.trim_end_matches(char::from(0)).to_string();
 
         println!("{:?}, {:?}, {:?}", lumpOffset, lumpName, lumpSize);
         Directory{

@@ -78,7 +78,16 @@ impl Wad{
         println!("{:?}", header);
 
         // todo: implement a directory
-        let directory = Directory::readDirectoryData(&wadFile, &header);
+        let directory = Directory::readDirectoryData(&wadFile, &header, header.directoryOffset);
+
+        //loop through all directories
+        for x in 0..header.directoryCount {
+            println!("{:?}", Directory::readDirectoryData(
+                &wadFile,
+                &header,
+                header.directoryOffset + x * 16));
+        }
+
         Wad{
             header,
             directory
