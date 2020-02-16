@@ -22,7 +22,6 @@ impl Directory{
         //trim
         let lumpName: String = lumpNameIntermediate.trim_end_matches(char::from(0)).to_string();
 
-        println!("{:?}, {:?}, {:?}", lumpOffset, lumpName, lumpSize);
         Directory{
             lumpOffset,
             lumpSize,
