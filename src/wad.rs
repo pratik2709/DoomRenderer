@@ -77,7 +77,8 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize/iVertexSizeInBytes;
 
                         for x in 0..iVertexCount{
-                            self.readVertexData(wadFile, self.header.directoryOffset + x * iVertexSizeInBytes);
+                            self.readVertexData(wadFile, self.directories[newIMapIndex]
+                                .lumpOffset + x * iVertexSizeInBytes);
                         }
 
                     }
@@ -98,7 +99,7 @@ impl Wad {
         file.read_exact(&mut raw_data)
             .unwrap_or_else(|e|
             panic!("unable to read lump data {}", e));
-//        println!("{:?}", raw_data);
+//        println!("{:?}, {:?}", &raw_data[0..2] as &[u8], &raw_data);
         let xPosition = read2Bytes(&raw_data[0..2]) as i16;
         let yPosition = read2Bytes(&raw_data[2..4]) as i16;
         println!("{}, {}", xPosition, yPosition);
