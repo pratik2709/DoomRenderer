@@ -9,9 +9,13 @@ include!("map.rs");
 fn main() {
     println!("Hello, world!");
     let w = Wad::from_path("./DOOM1.wad");
+
+//    Map map("E1M1");
+    let mapName = String::from("E1M1");
+    w.loadMapData(mapName);
 //    let map = Map{
-//
-//    }
+//        name:String::from("E1M1"),
+//    };
 }
 
 mod tests {

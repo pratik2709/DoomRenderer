@@ -23,7 +23,7 @@ pub struct Header {
 #[derive(Debug)]
 pub struct Wad{
     header: Header,
-    directory: Directory
+    directories: Vec<Directory>
 }
 
 pub struct LineDef{
