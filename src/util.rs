@@ -1,3 +1,4 @@
+//read 4 bytes
 pub fn u8_to_u32(u8s: &[u8]) -> u32{
     if u8s.len() != 4{
         panic!("fail!");
@@ -15,3 +16,15 @@ pub fn u8_to_u32(u8s: &[u8]) -> u32{
     p1 | p2 | p3 | p4
 
 }
+
+//read 2 bytes
+pub fn read2Bytes(u8s: &[u8]) -> u16 {
+    let p1 = u16::from(u8s[0]);
+    let p2 = u16::from(u8s[1]) << 8;
+    p1 | p2
+}
+
+//uint16_t WADReader::Read2Bytes(const uint8_t *pWADData, int offset)
+//{
+//    return (pWADData[offset + 1] << 8) | pWADData[offset];
+//}
