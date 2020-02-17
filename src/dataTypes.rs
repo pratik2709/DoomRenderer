@@ -26,11 +26,13 @@ pub struct Wad{
     directories: Vec<Directory>
 }
 
+#[derive(Debug)]
 pub struct LineDef{
     startVertex: u16,
     endVertex: u16,
     flags: u16,
     lineType: u16,
+    sectorTag: u16,
     rightSideDef: u16,
     leftSideDef: u16,
 
