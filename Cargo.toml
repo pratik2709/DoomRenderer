@@ -1,0 +1,10 @@
+[package]
+name = "doom"
+version = "0.1.0"
+authors = ["pratiksaxena <pratik2709@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sdl2 = "0.33.0"
