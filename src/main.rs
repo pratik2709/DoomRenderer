@@ -5,16 +5,11 @@ include!("header.rs");
 include!("dataTypes.rs");
 include!("map.rs");
 
+extern crate sdl2;
 
 fn main() {
-    println!("Hello, world!");
+    let sdl = sdl2::init().unwrap();
     let w = Wad::from_path("./DOOM1.wad");
-
-//    Map map("E1M1");
-
-//    let map = Map{
-//        name:String::from("E1M1"),
-//    };
 }
 
 mod tests {
