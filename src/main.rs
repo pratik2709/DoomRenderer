@@ -16,6 +16,7 @@ fn main() {
         for event in eventPump.poll_iter(){
             match event{
                 sdl2::event::Event::Quit {..} => break 'main,
+                _ => {}
             }
         }
     }
