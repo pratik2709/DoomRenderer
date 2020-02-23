@@ -5,11 +5,43 @@ pub struct DoomEngine{
 }
 
 impl DoomEngine{
+
+    pub fn new() -> DoomEngine{
+        DoomEngine{
+            isOver: false,
+            renderWidth: 320,
+            renderHeight: 200
+        }
+    }
+
+    pub fn init(){
+
+    }
+
+    pub fn getFileName() -> &'static str{
+        "./DOOM1.wad"
+    }
+
     pub fn render(){
 
     }
 
-    pub fn keyPressed(){
+    pub fn keyPressed(e: &mut sdl2::EventPump){
+        //see named loops in rust
+        'main: loop{
+            for event in e.poll_iter(){
+                match event{
+                    Event::Quit {..} => break 'main,
+                    Event::KeyDown {keycode: Some(Keycode::Up), ..} => {
+                        println!("key is pressed up");
+                    },
+                    Event::KeyDown {keycode: Some(Keycode::Down), ..} => {
+                        println!("key is pressed down");
+                    },
+                    _ => {}
+                }
+            }
+        }
 
     }
 
@@ -17,20 +49,25 @@ impl DoomEngine{
 
     }
 
-    pub fn quit(){
+    pub fn quit(mut self){
+        self.isOver = true;
 
     }
 
-    pub fn updated(){
+    pub fn update(){
 
     }
 
-    pub fn isOver(){
-
+    pub fn isOver(&self) -> bool{
+        self.isOver
     }
 
-    pub fn init(){
+    pub fn getName() -> & 'static str{
+        "DIYDoom"
+    }
 
+    pub fn getTimePerFrame() -> u32{
+        1000/60
     }
 
 
