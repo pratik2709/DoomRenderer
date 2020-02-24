@@ -70,8 +70,3 @@ enum ELINEDEFFLAGS
     eDRAW = 128
 }
 
-pub struct Map{
-    name: String,
-    vertexes: Vec<Vertex>,
-    lineDefs: Vec<LineDef>
-}

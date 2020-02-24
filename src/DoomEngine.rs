@@ -1,16 +1,21 @@
 pub struct DoomEngine{
     renderWidth: u32,
     renderHeight: u32,
-    isOver: bool
+    isOver: bool,
+//    episodeMap: Map
 }
 
 impl DoomEngine{
 
     pub fn new() -> DoomEngine{
+//        let map = Map{
+//            name:"e1m1", .. };
+
         DoomEngine{
             isOver: false,
             renderWidth: 320,
-            renderHeight: 200
+            renderHeight: 200,
+
         }
     }
 
@@ -23,7 +28,9 @@ impl DoomEngine{
     }
 
     pub fn render(){
-
+        canvas.set_draw_color(sdl2::pixels::Color::RGB(100,100,100));
+        canvas.clear();
+        canvas.present();
     }
 
     pub fn keyPressed(e: &mut sdl2::EventPump){

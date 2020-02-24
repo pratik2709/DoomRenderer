@@ -1,3 +1,9 @@
+pub struct Map{
+    name: String,
+    vertexes: Vec<Vertex>,
+    lineDefs: Vec<LineDef>
+}
+
 impl Map{
     pub fn getName(&self) -> String{
         self.name.clone()
