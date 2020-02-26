@@ -2,14 +2,11 @@ pub struct DoomEngine{
     renderWidth: u32,
     renderHeight: u32,
     isOver: bool,
-//    episodeMap: Map
-}
+x}
 
 impl DoomEngine{
 
     pub fn new() -> DoomEngine{
-//        let map = Map{
-//            name:"e1m1", .. };
 
         DoomEngine{
             isOver: false,

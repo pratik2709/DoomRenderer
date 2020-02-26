@@ -14,13 +14,9 @@ use sdl2::keyboard::Keycode;
 
 extern crate sdl2;
 fn main() {
-    let sdl = sdl2::init().unwrap();
-    let video_subsystem = sdl.video().unwrap();
-    let window = video_subsystem.window("Game", 320, 240).resizable().build().unwrap();
 
-    //Canvas:
-    // Manages and owns a target (Surface or Window) and allows drawing in it.
-    let mut canvas = window.into_canvas().present_vsync().build().unwrap();
+    Game::new();
+    Game::init();
     DoomEngine::render(canvas);
 
 
