@@ -21,13 +21,13 @@ fn main() {
     //Canvas:
     // Manages and owns a target (Surface or Window) and allows drawing in it.
     let mut canvas = window.into_canvas().present_vsync().build().unwrap();
-    DoomEngine::render(& mut eventPump);
+    DoomEngine::render(canvas);
 
 
     let mut eventPump = sdl.event_pump().unwrap();
     DoomEngine::keyPressed(& mut eventPump);
 
-    let w = Wad::from_path("./DOOM1.wad");
+    let w = Wad::from_path(DoomEngine::getFileName());
 }
 
 mod tests {

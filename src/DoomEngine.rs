@@ -27,7 +27,7 @@ impl DoomEngine{
         "./DOOM1.wad"
     }
 
-    pub fn render(){
+    pub fn render(mut canvas: sdl2::render::Canvas<sdl2::video::Window>){
         canvas.set_draw_color(sdl2::pixels::Color::RGB(100,100,100));
         canvas.clear();
         canvas.present();
