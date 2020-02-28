@@ -5,11 +5,11 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new(doomEngine: DoomEngine) -> Game {
+    pub fn new() -> Game {
         Game {
             renderWidth: 1280,
             renderHeight: 800,
-            doomEngine,
+            doomEngine: DoomEngine::new(),
         }
     }
 

@@ -2,7 +2,7 @@ pub struct DoomEngine{
     renderWidth: u32,
     renderHeight: u32,
     isOver: bool,
-x}
+}
 
 impl DoomEngine{
 
@@ -12,7 +12,6 @@ impl DoomEngine{
             isOver: false,
             renderWidth: 320,
             renderHeight: 200,
-
         }
     }
 
