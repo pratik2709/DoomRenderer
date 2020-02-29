@@ -15,11 +15,11 @@ impl DoomEngine{
         }
     }
 
-    pub fn init(){
-
+    pub fn init(&self){
+        let w = Wad::from_path(self.getFileName());
     }
 
-    pub fn getFileName() -> &'static str{
+    pub fn getFileName(&self) -> &'static str{
         "./DOOM1.wad"
     }
 
@@ -42,7 +42,7 @@ impl DoomEngine{
 
     }
 
-    pub fn update(){
+    pub fn update(&self){
 
     }
 
@@ -50,11 +50,11 @@ impl DoomEngine{
         self.isOver
     }
 
-    pub fn getName() -> & 'static str{
+    pub fn getName(&self) -> & 'static str{
         "DIYDoom"
     }
 
-    pub fn getTimePerFrame() -> u32{
+    pub fn getTimePerFrame(&self) -> u32{
         1000/60
     }
 

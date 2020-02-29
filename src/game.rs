@@ -3,17 +3,18 @@ pub struct Game {
     renderHeight: u32,
     sdl: sdl2::Sdl,
     canvas: sdl2::render::Canvas<sdl2::video::Window>,
-//    window: sdl2::video::Window,
+    //    window: sdl2::video::Window,
     doomEngine: DoomEngine,
 }
 
 impl Game {
     pub fn new() -> Game {
+        let doomEngine = DoomEngine::new();
         let renderWidth = 1280;
         let renderHeight = 800;
         let sdl = sdl2::init().unwrap();
         let video_subsystem = sdl.video().unwrap();
-        let window: sdl2::video::Window = video_subsystem.window("Game",
+        let window: sdl2::video::Window = video_subsystem.window(doomEngine.getName(),
                                                                  renderWidth, renderHeight).resizable().build()
             .unwrap();
 
@@ -26,17 +27,14 @@ impl Game {
             sdl,
             canvas,
 //            window,
-            doomEngine: DoomEngine::new(),
+            doomEngine,
         }
     }
 
     pub fn init(&mut self) {
         self.canvas.set_draw_color(sdl2::pixels::Color::RGB(0, 0, 0));
+        self.doomEngine.init();
         self.canvas.set_logical_size(self.doomEngine.renderWidth, self.doomEngine.renderHeight);
-    }
-
-    pub fn render(&mut self) {
-        self.doomEngine.render(&mut self.canvas);
     }
 
     pub fn processInput(&self) {
@@ -56,5 +54,21 @@ impl Game {
                 }
             }
         }
+    }
+
+    pub fn render(&mut self) {
+        self.doomEngine.render(&mut self.canvas);
+    }
+
+    pub fn update(&self) {
+        self.doomEngine.update();
+    }
+
+    pub fn isOver(&self) {
+        self.doomEngine.isOver();
+    }
+
+    pub fn delay(&self){
+        self.doomEngine.getTimePerFrame();
     }
 }

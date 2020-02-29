@@ -19,8 +19,8 @@ fn main() {
     let mut game = Game::new();
     game.init();
     game.processInput();
+    game.update();
     game.render();
+    game.delay();
 
-
-    let w = Wad::from_path(DoomEngine::getFileName());
 }
