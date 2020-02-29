@@ -46,9 +46,11 @@ impl Game {
                     Event::Quit { .. } => break 'main,
                     Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
                         self.doomEngine.keyPressed();
+                        break 'main
                     }
                     Event::KeyDown { keycode: Some(Keycode::Down), .. } => {
                         self.doomEngine.keyPressed();
+                        break 'main
                     }
                     _ => {}
                 }
@@ -64,8 +66,8 @@ impl Game {
         self.doomEngine.update();
     }
 
-    pub fn isOver(&self) {
-        self.doomEngine.isOver();
+    pub fn isOver(&self) -> bool {
+        self.doomEngine.isOver()
     }
 
     pub fn delay(&self){
