@@ -67,7 +67,7 @@ impl Wad {
             mapName => {
                 let mut newIMapIndex = iMapIndex.unwrap();
                 let vertexString = String::from("VERTEXES");
-                newIMapIndex += EMAPSLUMPSINDEX::eVERTEXES as usize;
+                newIMapIndex += EMAPSLUMPSINDEX::EVERTEXES as usize;
                 match &self.directories[newIMapIndex].lumpName {
                     vertexString => {
                         let iVertexSizeInBytes = mem::size_of::<Vertex>();
@@ -113,7 +113,7 @@ impl Wad {
             mapName => {
                 let mut newIMapIndex = iMapIndex.unwrap();
                 let vertexString = String::from("LINEDEFS");
-                newIMapIndex += EMAPSLUMPSINDEX::eLINEDEFS as usize;
+                newIMapIndex += EMAPSLUMPSINDEX::ELINEDEFS as usize;
                 match &self.directories[newIMapIndex].lumpName {
                     vertexString => {
                         let iVertexSizeInBytes = mem::size_of::<LineDef>();

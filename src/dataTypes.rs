@@ -44,29 +44,29 @@ pub struct Vertex{
 }
 
 enum EMAPSLUMPSINDEX{
-    eTHINGS=1,
-    eLINEDEFS,
-    eSIDEDDEFS,
-    eVERTEXES,
-    eSEAGS,
-    eSSECTORS,
-    eNODES,
-    eSECTORS,
-    eREJECT,
-    eBLOCKMAP,
-    eCOUNT
+    ETHINGS=1,
+    ELINEDEFS,
+    ESIDEDDEFS,
+    EVERTEXES,
+    ESEAGS,
+    ESSECTORS,
+    ENODES,
+    ESECTORS,
+    EREJECT,
+    EBLOCKMAP,
+    ECOUNT
 }
 
 enum ELINEDEFFLAGS
 {
-    eBLOCKING = 0,
-    eBLOCKMONSTERS = 1,
-    eTWOSIDED = 2,
-    eDONTPEGTOP = 4,
-    eDONTPEGBOTTOM = 8,
-    eSECRET = 16,
-    eSOUNDBLOCK = 32,
-    eDONTDRAW = 64,
-    eDRAW = 128
+    EBLOCKING = 0,
+    EBLOCKMONSTERS = 1,
+    ETWOSIDED = 2,
+    EDONTPEGTOP = 4,
+    EDONTPEGBOTTOM = 8,
+    ESECRET = 16,
+    ESOUNDBLOCK = 32,
+    EDONTDRAW = 64,
+    EDRAW = 128
 }
 

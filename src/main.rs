@@ -15,23 +15,13 @@ use sdl2::keyboard::Keycode;
 extern crate sdl2;
 fn main() {
 
-    Game::new();
-    Game::init();
-    DoomEngine::render(canvas);
+    let mut game = Game::new();
+    game.init();
+    game.render();
 
 
-    let mut eventPump = sdl.event_pump().unwrap();
-    DoomEngine::keyPressed(& mut eventPump);
+//    let mut eventPump = sdl.event_pump().unwrap();
+//    DoomEngine::keyPressed(& mut eventPump);
 
     let w = Wad::from_path(DoomEngine::getFileName());
-}
-
-mod tests {
-    use super::Wad;
-
-    #[test]
-    fn open_file() {
-        let w = Wad::from_path("./DOOM1.wad");
-
-    }
 }
