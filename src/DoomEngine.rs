@@ -29,26 +29,11 @@ impl DoomEngine{
         canvas.present();
     }
 
-    pub fn keyPressed(e: &mut sdl2::EventPump){
-        //see named loops in rust
-        'main: loop{
-            for event in e.poll_iter(){
-                match event{
-                    Event::Quit {..} => break 'main,
-                    Event::KeyDown {keycode: Some(Keycode::Up), ..} => {
-                        println!("key is pressed up");
-                    },
-                    Event::KeyDown {keycode: Some(Keycode::Down), ..} => {
-                        println!("key is pressed down");
-                    },
-                    _ => {}
-                }
-            }
-        }
-
+    pub fn keyPressed(&self){
+        println!("key is pressed in doomengine");
     }
 
-    pub fn keyReleased(){
+    pub fn keyReleased(&self){
 
     }
 

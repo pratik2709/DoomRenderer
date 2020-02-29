@@ -12,16 +12,15 @@ include!("DoomEngine.rs");
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 
+
 extern crate sdl2;
 fn main() {
 
     let mut game = Game::new();
     game.init();
+    game.processInput();
     game.render();
 
-
-//    let mut eventPump = sdl.event_pump().unwrap();
-//    DoomEngine::keyPressed(& mut eventPump);
 
     let w = Wad::from_path(DoomEngine::getFileName());
 }
