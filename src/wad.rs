@@ -5,7 +5,7 @@ use std::str;
 use std::mem;
 
 impl Wad {
-    pub fn getWadData(wadFile: File) -> Wad {
+    pub fn getWadData(wadFile: &File) -> Wad {
         let header = Header::from_file(&wadFile);
 
         // todo: implement a directory
@@ -26,9 +26,6 @@ impl Wad {
             directories: dirs,
         };
 
-        let mapName = String::from("E1M1");
-        let mapData = w.loadMapData(&wadFile, mapName);
-        println!("{:?}", mapData);
         w
     }
 

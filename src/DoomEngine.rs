@@ -2,25 +2,30 @@ pub struct DoomEngine{
     renderWidth: u32,
     renderHeight: u32,
     isOver: bool,
+    map: Map
 }
 
 impl DoomEngine{
 
     pub fn new() -> DoomEngine{
+        let wadFile = Wad::loadFileUsingPath(DoomEngine::getFileName());
+        let w = Wad::getWadData(&wadFile);
+        let mapName = String::from("E1M1");
+        let mapData = w.loadMapData(&wadFile, mapName);
 
         DoomEngine{
             isOver: false,
             renderWidth: 320,
             renderHeight: 200,
+            map: mapData
         }
     }
 
     pub fn init(&self){
-        let wadFile = Wad::loadFileUsingPath(self.getFileName());
-        let w = Wad::getWadData(wadFile);
+
     }
 
-    pub fn getFileName(&self) -> &'static str{
+    pub fn getFileName() -> &'static str{
         "./DOOM1.wad"
     }
 
