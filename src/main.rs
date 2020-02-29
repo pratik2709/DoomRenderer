@@ -20,10 +20,10 @@ fn main() {
     let mut game = Game::new();
     game.init();
 
-    while !game.isOver() {
+//    while !game.isOver() {
         game.processInput();
         game.update();
         game.render();
         game.delay();
-    }
+//    }
 }

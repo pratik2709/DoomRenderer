@@ -16,7 +16,7 @@ impl DoomEngine{
     }
 
     pub fn init(&self){
-        let w = Wad::from_path(self.getFileName());
+        let w = Wad::loadPath(self.getFileName());
     }
 
     pub fn getFileName(&self) -> &'static str{
@@ -26,7 +26,7 @@ impl DoomEngine{
     pub fn render(&self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>){
         canvas.set_draw_color(sdl2::pixels::Color::RGB(100,100,100));
         canvas.clear();
-        canvas.present();
+
     }
 
     pub fn keyPressed(&self){

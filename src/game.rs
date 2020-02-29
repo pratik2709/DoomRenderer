@@ -60,10 +60,12 @@ impl Game {
 
     pub fn render(&mut self) {
         self.doomEngine.render(&mut self.canvas);
+        self.canvas.present();
     }
 
-    pub fn update(&self) {
+    pub fn update(& mut self) {
         self.doomEngine.update();
+
     }
 
     pub fn isOver(&self) -> bool {

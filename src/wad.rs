@@ -5,7 +5,7 @@ use std::str;
 use std::mem;
 
 impl Wad {
-    pub fn from_path(path: &str) -> Wad {
+    pub fn loadPath(path: &str) -> Wad {
         // & str is called a string slice, an immutable view of a string
         let path = Path::new(path);
         let wadFile = File::open(path).unwrap_or_else(|e| {
