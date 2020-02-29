@@ -16,7 +16,8 @@ impl DoomEngine{
     }
 
     pub fn init(&self){
-        let w = Wad::loadPath(self.getFileName());
+        let wadFile = Wad::loadFileUsingPath(self.getFileName());
+        let w = Wad::getWadData(wadFile);
     }
 
     pub fn getFileName(&self) -> &'static str{

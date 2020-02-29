@@ -5,12 +5,7 @@ use std::str;
 use std::mem;
 
 impl Wad {
-    pub fn loadPath(path: &str) -> Wad {
-        // & str is called a string slice, an immutable view of a string
-        let path = Path::new(path);
-        let wadFile = File::open(path).unwrap_or_else(|e| {
-            panic!("unable to open th WAD file {}", e)
-        });
+    pub fn getWadData(wadFile: File) -> Wad {
         let header = Header::from_file(&wadFile);
 
         // todo: implement a directory
@@ -32,15 +27,32 @@ impl Wad {
         };
 
         let mapName = String::from("E1M1");
-        w.loadMapData(&wadFile, mapName);
+        let mapData = w.loadMapData(&wadFile, mapName);
+        println!("{:?}", mapData);
         w
     }
 
-    pub fn loadMapData(&self, wadFile: &File, mapName: String) -> bool {
+    pub fn loadFileUsingPath(path: &str) -> File {
+        // & str is called a string slice, an immutable view of a string
+        let path = Path::new(path);
+        let wadFile = File::open(path).unwrap_or_else(|e| {
+            panic!("unable to open th WAD file {}", e)
+        });
+        wadFile
+    }
+
+    pub fn loadMapData(&self, wadFile: &File, mapName: String) -> Map {
         let s= mapName.clone();
-        let vertexMapData = self.readVertexMapData(wadFile, mapName);
-        self.readMapLineDef(wadFile, s);
-        true
+        let s1= mapName.clone();
+        let mut lineDefCollection: Vec<LineDef> = Vec::new();
+        let mut vertexCollection: Vec<Vertex> = Vec::new();
+        let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut vertexCollection);
+        let lineDefData = self.readMapLineDef(wadFile, s, &mut lineDefCollection);
+        Map{
+            name: s1,
+            vertexes: vertexCollection,
+            lineDefs: lineDefCollection
+        }
     }
 
     pub fn findMapIndex(&self, mapName: String) -> Option<usize> {
@@ -59,7 +71,8 @@ impl Wad {
         None
     }
 
-    pub fn readVertexMapData(&self, wadFile: &File, mapName: String) -> bool {
+    pub fn readVertexMapData(&self, wadFile: &File, mapName: String, vertexCollection:
+    &mut Vec<Vertex>) -> bool{
         let iMapIndex = self.findMapIndex(mapName);
 
         match iMapIndex {
@@ -77,8 +90,9 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
                         for x in 0..iVertexCount {
-                            self.readVertexData(wadFile, self.directories[newIMapIndex]
-                                .lumpOffset + x * iVertexSizeInBytes);
+                            vertexCollection.push(self.readVertexData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iVertexSizeInBytes));
                         }
                     }
                 }
@@ -90,7 +104,7 @@ impl Wad {
         true
     }
 
-    pub fn readVertexData(&self, mut file: &File, offset: usize) {
+    pub fn readVertexData(&self, mut file: &File, offset: usize) -> Vertex {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to read directory data {}", e));
 
@@ -101,11 +115,15 @@ impl Wad {
 //        println!("{:?}, {:?}", &raw_data[0..2] as &[u8], &raw_data);
         let xPosition = read2Bytes(&raw_data[0..2]) as i16;
         let yPosition = read2Bytes(&raw_data[2..4]) as i16;
-        println!("{}, {}", xPosition, yPosition);
+
+        Vertex{
+            xPosition, yPosition
+        }
     }
 
 
-    pub fn readMapLineDef(&self, wadFile: &File, mapName: String) -> bool {
+    pub fn readMapLineDef(&self, wadFile: &File, mapName: String, lineDefCollection
+    :&mut Vec<LineDef>) -> bool {
         let iMapIndex = self.findMapIndex(mapName);
 
         match iMapIndex {
@@ -123,8 +141,9 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
                         for x in 0..iVertexCount {
-                            self.ReadLinedefData(wadFile, self.directories[newIMapIndex]
-                                .lumpOffset + x * iVertexSizeInBytes);
+                            lineDefCollection.push(self.ReadLinedefData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iVertexSizeInBytes));
                         }
                     }
                 }
@@ -136,7 +155,7 @@ impl Wad {
         true
     }
 
-    pub fn ReadLinedefData(&self, mut file: &File, offset: usize) {
+    pub fn ReadLinedefData(&self, mut file: &File, offset: usize) -> LineDef {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to read directory data {}", e));
 
@@ -162,6 +181,6 @@ impl Wad {
             leftSideDef,
 
         };
-        println!("{:?}", l);
+        l
     }
 }

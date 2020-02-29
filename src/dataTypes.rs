@@ -38,6 +38,7 @@ pub struct LineDef{
 
 }
 
+#[derive(Debug)]
 pub struct Vertex{
     xPosition: i16,
     yPosition: i16,

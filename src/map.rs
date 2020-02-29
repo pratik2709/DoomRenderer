@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Map{
     name: String,
     vertexes: Vec<Vertex>,
