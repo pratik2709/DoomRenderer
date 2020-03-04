@@ -45,11 +45,7 @@ impl Wad {
         let mut vertexCollection: Vec<Vertex> = Vec::new();
         let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut vertexCollection);
         let lineDefData = self.readMapLineDef(wadFile, s, &mut lineDefCollection);
-        Map{
-            name: s1,
-            vertexes: vertexCollection,
-            lineDefs: lineDefCollection
-        }
+        Map::new(s1, vertexCollection, lineDefCollection)
     }
 
     pub fn findMapIndex(&self, mapName: String) -> Option<usize> {
