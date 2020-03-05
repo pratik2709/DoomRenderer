@@ -38,10 +38,10 @@ pub struct LineDef{
 
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vertex{
-    xPosition: i16,
-    yPosition: i16,
+    xPosition: i32,
+    yPosition: i32,
 }
 
 enum EMAPSLUMPSINDEX{

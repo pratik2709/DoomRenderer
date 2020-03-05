@@ -106,8 +106,8 @@ impl Wad {
             .unwrap_or_else(|e|
                 panic!("unable to read lump data {}", e));
 //        println!("{:?}, {:?}", &raw_data[0..2] as &[u8], &raw_data);
-        let xPosition = read2Bytes(&raw_data[0..2]) as i16;
-        let yPosition = read2Bytes(&raw_data[2..4]) as i16;
+        let xPosition = read2Bytes(&raw_data[0..2]) as i32;
+        let yPosition = read2Bytes(&raw_data[2..4]) as i32;
 
         Vertex{
             xPosition, yPosition
