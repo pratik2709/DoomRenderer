@@ -60,7 +60,7 @@ impl Map{
         let iXShift = -self.xMin;
         let iYShift = -self.yMin;
 
-//        canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
+        canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
         for line in &self.lineDefs{
             let vStart = self.vertexes[line.startVertex as usize];
             let vEnd = self.vertexes[line.endVertex as usize];
