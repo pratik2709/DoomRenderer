@@ -43,9 +43,11 @@ impl Wad {
         let s1= mapName.clone();
         let mut lineDefCollection: Vec<LineDef> = Vec::new();
         let mut vertexCollection: Vec<Vertex> = Vec::new();
-        let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut vertexCollection);
-        let lineDefData = self.readMapLineDef(wadFile, s, &mut lineDefCollection);
-        Map::new(s1, vertexCollection, lineDefCollection)
+        let mut map = Map::new(s1, vertexCollection, lineDefCollection);
+        let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut map);
+        let lineDefData = self.readMapLineDef(wadFile, s, &mut map);
+        map
+
     }
 
     pub fn findMapIndex(&self, mapName: String) -> Option<usize> {
@@ -64,8 +66,8 @@ impl Wad {
         None
     }
 
-    pub fn readVertexMapData(&self, wadFile: &File, mapName: String, vertexCollection:
-    &mut Vec<Vertex>) -> bool{
+    pub fn readVertexMapData(&self, wadFile: &File, mapName: String, map:
+    &mut Map) -> bool{
         let iMapIndex = self.findMapIndex(mapName);
 
         match iMapIndex {
@@ -83,7 +85,7 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
                         for x in 0..iVertexCount {
-                            vertexCollection.push(self.readVertexData(wadFile, self
+                            map.addVertex(self.readVertexData(wadFile, self
                                 .directories[newIMapIndex]
                                 .lumpOffset + x * iVertexSizeInBytes));
                         }
@@ -115,8 +117,8 @@ impl Wad {
     }
 
 
-    pub fn readMapLineDef(&self, wadFile: &File, mapName: String, lineDefCollection
-    :&mut Vec<LineDef>) -> bool {
+    pub fn readMapLineDef(&self, wadFile: &File, mapName: String, map:
+    &mut Map) -> bool {
         let iMapIndex = self.findMapIndex(mapName);
 
         match iMapIndex {
@@ -134,7 +136,7 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
                         for x in 0..iVertexCount {
-                            lineDefCollection.push(self.ReadLinedefData(wadFile, self
+                            map.addLinedef(self.ReadLinedefData(wadFile, self
                                 .directories[newIMapIndex]
                                 .lumpOffset + x * iVertexSizeInBytes));
                         }
