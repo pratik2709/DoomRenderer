@@ -3,41 +3,40 @@ pub struct Game {
     renderHeight: u32,
     sdl: sdl2::Sdl,
     canvas: sdl2::render::Canvas<sdl2::video::Window>,
-    //    window: sdl2::video::Window,
     doomEngine: DoomEngine,
 }
 
 impl Game {
     pub fn new() -> Game {
         let doomEngine = DoomEngine::new();
-        let renderWidth = 1280;
-        let renderHeight = 800;
+        let renderWidth = 320;
+        let renderHeight = 240;
         let sdl = sdl2::init().unwrap();
         let video_subsystem = sdl.video().unwrap();
-        let window: sdl2::video::Window = video_subsystem.window(doomEngine.getName(),
-                                                                 renderWidth, renderHeight).resizable().build()
-            .unwrap();
+        let window = video_subsystem.window(doomEngine.getName(),
+                                            renderWidth,
+                                            renderHeight)
+            .position_centered()
+            .opengl()
+            .build()
+            .map_err(|e| e.to_string()).unwrap();
 
         //Canvas:
         // Manages and owns a target (Surface or Window) and allows drawing in it.
-        let canvas = window.into_canvas().present_vsync().build().unwrap();
+        let mut canvas = window.into_canvas().build().map_err(|e| e.to_string()).unwrap();
         Game {
             renderWidth,
             renderHeight,
             sdl,
             canvas,
-//            window,
             doomEngine,
         }
     }
 
     pub fn init(&mut self) {
-        self.canvas.set_draw_color(sdl2::pixels::Color::RGB(0, 0, 0));
-        self.doomEngine.init();
-        self.canvas.set_logical_size(self.doomEngine.renderWidth, self.doomEngine.renderHeight);
     }
 
-    pub fn processInput(&self) {
+    pub fn processInput(&mut self) {
         //see named loops in rust
         let mut eventPump = self.sdl.event_pump().unwrap();
         'main: loop {
@@ -52,27 +51,42 @@ impl Game {
                         self.doomEngine.keyPressed();
                         break 'main
                     }
+                    Event::KeyDown { keycode: Some(Keycode::Right), .. } => {
+                        self.doomEngine.keyPressed();
+                        self.doomEngine.quit();
+                    }
                     _ => {}
                 }
             }
+            self.render();
+            self.update();
+            self.delay();
+            if self.isOver() {
+                break 'main
+            }
         }
+
     }
 
     pub fn render(&mut self) {
-        self.doomEngine.render(&mut self.canvas);
+        self.canvas.set_draw_color(Color::RGB(255, 210, 0));
+        let point2 = sdl2::rect::Point::new(0,0);
+        let point1 = sdl2::rect::Point::new(10,10);
+        self.canvas.draw_line(point1, point2);
+        self.canvas.fill_rect(Rect::new(10, 10, 100, 100));
         self.canvas.present();
+        self.doomEngine.render(&mut self.canvas);
     }
 
-    pub fn update(& mut self) {
+    pub fn update(&mut self) {
         self.doomEngine.update();
-
     }
 
     pub fn isOver(&self) -> bool {
         self.doomEngine.isOver()
     }
 
-    pub fn delay(&self){
+    pub fn delay(&self) {
         self.doomEngine.getTimePerFrame();
     }
 }
