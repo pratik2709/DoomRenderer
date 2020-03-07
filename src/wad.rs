@@ -76,6 +76,7 @@ impl Wad {
                 let mut newIMapIndex = iMapIndex.unwrap();
                 let vertexString = String::from("VERTEXES");
                 newIMapIndex += EMAPSLUMPSINDEX::EVERTEXES as usize;
+//                newIMapIndex += EMAPSLUMPSINDEX::eVERTEXES as usize;
                 match &self.directories[newIMapIndex].lumpName {
                     vertexString => {
                         let iVertexSizeInBytes = mem::size_of::<Vertex>();
@@ -84,6 +85,7 @@ impl Wad {
                         let iVertexCount =
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
+                        println!("Check vertex count:: {}", iVertexCount);
                         for x in 0..iVertexCount {
                             map.addVertex(self.readVertexData(wadFile, self
                                 .directories[newIMapIndex]
@@ -108,8 +110,8 @@ impl Wad {
             .unwrap_or_else(|e|
                 panic!("unable to read lump data {}", e));
 //        println!("{:?}, {:?}", &raw_data[0..2] as &[u8], &raw_data);
-        let xPosition = read2Bytes(&raw_data[0..2]) as i32;
-        let yPosition = read2Bytes(&raw_data[2..4]) as i32;
+        let xPosition = read2Bytes(&raw_data[0..2]) as i16;
+        let yPosition = read2Bytes(&raw_data[2..4]) as i16;
 
         Vertex{
             xPosition, yPosition

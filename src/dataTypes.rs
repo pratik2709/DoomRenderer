@@ -40,12 +40,14 @@ pub struct LineDef{
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vertex{
-    xPosition: i32,
-    yPosition: i32,
+    xPosition: i16,
+    yPosition: i16,
 }
 
-enum EMAPSLUMPSINDEX{
-    ETHINGS=1,
+enum EMAPSLUMPSINDEX
+{
+    ENAME,
+    ETHINGS,
     ELINEDEFS,
     ESIDEDDEFS,
     EVERTEXES,

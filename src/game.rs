@@ -69,11 +69,7 @@ impl Game {
     }
 
     pub fn render(&mut self) {
-        self.canvas.set_draw_color(Color::RGB(255, 210, 0));
-        let point2 = sdl2::rect::Point::new(0,0);
-        let point1 = sdl2::rect::Point::new(10,10);
-        self.canvas.draw_line(point1, point2);
-        self.canvas.fill_rect(Rect::new(10, 10, 100, 100));
+        self.canvas.set_draw_color(Color::RGB(255, 255, 0));
         self.canvas.present();
         self.doomEngine.render(&mut self.canvas);
     }

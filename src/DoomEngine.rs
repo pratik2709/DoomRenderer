@@ -27,7 +27,7 @@ impl DoomEngine {
     }
 
     pub fn render(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
-//        self.map.renderAutoMap(canvas);
+        self.map.renderAutoMap(canvas);
     }
 
     pub fn keyPressed(&self) {
