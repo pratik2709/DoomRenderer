@@ -7,12 +7,17 @@ pub struct Map{
     yMax: i16,
     autoMapScaleFactor: i16,
     vertexes: Vec<Vertex>,
-    lineDefs: Vec<LineDef>
+    lineDefs: Vec<LineDef>,
+    things: Vec<Thing>,
+    player: Player,
+
 }
 
 impl Map{
 
-    pub fn new(name: String, vertexes: Vec<Vertex>, lineDefs: Vec<LineDef>)
+    pub fn new(name: String, vertexes: Vec<Vertex>,
+               lineDefs: Vec<LineDef>, things: Vec<Thing>, player: Player
+    )
         -> Map{
 
         Map{
@@ -23,7 +28,9 @@ impl Map{
             yMin: std::i16::MAX,
             autoMapScaleFactor: 15,
             vertexes,
-            lineDefs
+            lineDefs,
+            things,
+            player
         }
     }
 
@@ -75,5 +82,9 @@ impl Map{
 
             canvas.draw_line(point1, point2);
         }
+    }
+
+    pub fn addThing(&mut self, thing: Thing){
+        self.things.push(thing);
     }
 }

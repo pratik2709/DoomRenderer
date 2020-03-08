@@ -38,12 +38,13 @@ impl Wad {
         wadFile
     }
 
-    pub fn loadMapData(&self, wadFile: &File, mapName: String) -> Map {
+    pub fn loadMapData(&self, wadFile: &File, mapName: String, player: Player) -> Map {
         let s= mapName.clone();
         let s1= mapName.clone();
         let mut lineDefCollection: Vec<LineDef> = Vec::new();
         let mut vertexCollection: Vec<Vertex> = Vec::new();
-        let mut map = Map::new(s1, vertexCollection, lineDefCollection);
+        let mut thingxCollection: Vec<Thing> = Vec::new();
+        let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection, player);
         let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut map);
         let lineDefData = self.readMapLineDef(wadFile, s, &mut map);
         map
@@ -178,6 +179,62 @@ impl Wad {
             leftSideDef,
 
         };
+        l
+    }
+
+    pub fn readMapThing(&self, wadFile: &File, mapName: String, map: &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(mapName);
+
+        match iMapIndex {
+            None => false,
+            mapName => {
+                let mut newIMapIndex = iMapIndex.unwrap();
+                let vertexString = String::from("THINGS");
+                newIMapIndex += EMAPSLUMPSINDEX::ETHINGS as usize;
+                match &self.directories[newIMapIndex].lumpName {
+                    vertexString => {
+                        let iThingSizeInBytes = mem::size_of::<Thing>();
+
+                        //not understanding this
+                        let iThingCount =
+                            self.directories[newIMapIndex].lumpSize / iThingSizeInBytes;
+
+                        for x in 0..iThingCount {
+                            map.addThing(self.readThingData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iThingSizeInBytes));
+                        }
+                    }
+                }
+                false
+            }
+        };
+
+
+        true
+    }
+
+
+    pub fn readThingData(&self, mut file: &File, offset: usize) -> Thing {
+        file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
+            panic!("unable to read directory data {}", e));
+
+        let mut raw_data: [u8; 10] = [0; 10];
+        file.read_exact(&mut raw_data)
+            .unwrap_or_else(|e|
+                panic!("unable to read lump data {}", e));
+        let xPosition = read2Bytes(&raw_data[0..2]) as i16;
+        let yPosition = read2Bytes(&raw_data[2..4]) as i16;
+        let angleOfThing = read2Bytes(&raw_data[4..6]) as u16;
+        let typeOfThing = read2Bytes(&raw_data[6..8]) as u16;
+        let flags = read2Bytes(&raw_data[8..10]) as u16;
+        let l = Thing{
+                xPosition,
+                yPosition,
+                angleOfThing,
+                typeOfThing,
+                flags
+            };
         l
     }
 }

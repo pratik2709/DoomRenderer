@@ -10,7 +10,9 @@ impl DoomEngine {
         let wadFile = Wad::loadFileUsingPath(DoomEngine::getFileName());
         let w = Wad::getWadData(&wadFile);
         let mapName = String::from("E1M1");
-        let mapData = w.loadMapData(&wadFile, mapName);
+        let player = Player::new(1);
+        let mapData = w.loadMapData(&wadFile, mapName, player);
+
 
         DoomEngine {
             isOver: false,

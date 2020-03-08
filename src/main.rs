@@ -8,6 +8,7 @@ include!("dataTypes.rs");
 include!("map.rs");
 include!("game.rs");
 include!("DoomEngine.rs");
+include!("Player.rs");
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;

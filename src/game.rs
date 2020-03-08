@@ -69,9 +69,10 @@ impl Game {
     }
 
     pub fn render(&mut self) {
-        self.canvas.set_draw_color(Color::RGB(255, 255, 0));
-        self.canvas.present();
+        self.canvas.set_draw_color(Color::RGB(0, 0, 255));
+        self.canvas.clear();
         self.doomEngine.render(&mut self.canvas);
+        self.canvas.present();
     }
 
     pub fn update(&mut self) {

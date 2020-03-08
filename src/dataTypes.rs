@@ -73,3 +73,13 @@ enum ELINEDEFFLAGS
     EDRAW = 128
 }
 
+#[derive(Debug)]
+pub struct Thing{
+    xPosition: i16,
+    yPosition: i16,
+    angleOfThing: u16,
+    typeOfThing: u16,
+    flags: u16
+
+}
+
