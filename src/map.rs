@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Map{
+pub struct Map {
     name: String,
     xMin: i16,
     xMax: i16,
@@ -13,14 +13,12 @@ pub struct Map{
 
 }
 
-impl Map{
-
+impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
-               lineDefs: Vec<LineDef>, things: Vec<Thing>, player: Player
+               lineDefs: Vec<LineDef>, things: Vec<Thing>, player: Player,
     )
-        -> Map{
-
-        Map{
+               -> Map {
+        Map {
             name,
             xMax: std::i16::MIN,
             xMin: std::i16::MAX,
@@ -30,45 +28,45 @@ impl Map{
             vertexes,
             lineDefs,
             things,
-            player
+            player,
         }
     }
 
-    pub fn getName(&self) -> String{
+    pub fn getName(&self) -> String {
         self.name.clone()
     }
 
-    pub fn addVertex(&mut self, vertex: Vertex){
+    pub fn addVertex(&mut self, vertex: Vertex) {
         self.vertexes.push(vertex.clone());
 
-        if self.xMin > vertex.xPosition{
+        if self.xMin > vertex.xPosition {
             self.xMin = vertex.xPosition;
-        }
-
-        else if self.xMax < vertex.xPosition {
+        } else if self.xMax < vertex.xPosition {
             self.xMax = vertex.xPosition;
         }
 
-        if self.yMin > vertex.yPosition{
+        if self.yMin > vertex.yPosition {
             self.yMin = vertex.yPosition;
-        }
-
-        else if self.yMax < vertex.yPosition {
+        } else if self.yMax < vertex.yPosition {
             self.yMax = vertex.yPosition;
         }
-
     }
 
-    pub fn addLinedef(&mut self, linedef: LineDef){
+    pub fn addLinedef(&mut self, linedef: LineDef) {
         self.lineDefs.push(linedef);
     }
 
-    pub fn renderAutoMap(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>){
+    pub fn renderAutoMap(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
         let iXShift = -self.xMin;
         let iYShift = -self.yMin;
 
+        self.renderAutoMapWalls(canvas, iXShift, iYShift);
+    }
+
+    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
+                              iXShift: i16, iYShift: i16) {
         canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
-        for line in &self.lineDefs{
+        for line in &self.lineDefs {
             let vStart = self.vertexes[line.startVertex as usize];
             let vEnd = self.vertexes[line.endVertex as usize];
             let point1 = sdl2::rect::Point::new(((vStart.xPosition + iXShift) / self
@@ -84,7 +82,13 @@ impl Map{
         }
     }
 
-    pub fn addThing(&mut self, thing: Thing){
+    pub fn renderAutoMapPlayer(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
+                              iXShift: i16, iYShift: i16) {
+
+
+    }
+
+    pub fn addThing(&mut self, thing: Thing) {
         self.things.push(thing);
     }
 }
