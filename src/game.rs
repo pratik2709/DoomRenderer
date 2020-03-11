@@ -34,8 +34,6 @@ impl Game {
         }
     }
 
-    pub fn init(&mut self) {
-    }
 
     pub fn processInput(&mut self) {
         //see named loops in rust
