@@ -10,8 +10,8 @@ impl Player{
     fn new(playerID: i32) -> Player{
         Player{
             playerID,
-            xPosition:0,
-            yPosition:0,
+            xPosition:10,
+            yPosition:10,
             angleOfPlayer:0,
         }
     }

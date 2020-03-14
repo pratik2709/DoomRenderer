@@ -65,6 +65,20 @@ impl Map {
         let mut iRenderXSize = iRender.0 as i16;
         let mut iRenderYSize = iRender.1 as i16;
 
+        self.renderAutoMapWalls(canvas, iXShift, iYShift,
+                                iRenderXSize,
+                                iRenderYSize);
+
+        self.renderAutoMapPlayer(canvas, iXShift, iYShift,
+                                iRenderXSize,
+                                iRenderYSize);
+
+
+    }
+
+    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
+                              iXShift: i16, iYShift: i16, mut iRenderXSize: i16, mut iRenderYSize:
+                              i16) {
         iRenderXSize -= 1;
         iRenderYSize -= 1;
 
@@ -84,15 +98,25 @@ impl Map {
 
             canvas.draw_line(point1, point2);
         }
+    }
+
+    pub fn renderAutoMapPlayer(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
+                               iXShift: i16, iYShift: i16, mut iRenderXSize: i16, mut iRenderYSize:
+                              i16) {
+
+        iRenderXSize -= 1;
+        iRenderYSize -= 1;
 
         canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
+
+//        canvas.fill_rect(Rect::new(10, 10, 100, 100));
         let mut direction = vec![(-1, -1), (0, -1), (1, -1),
                                  (-1, 0), (0, 0), (1, 0),
                                  (-1, 1), (0, 1), (1, 1)];
 
         for i in &direction{
-            let x = (((self.player.xPosition + iXShift)/ self
-                .autoMapScaleFactor) + i.0) as i32;
+            let x = ((self.player.xPosition + iXShift)/ self
+                .autoMapScaleFactor + i.0) as i32;
 
             let y = (iRenderYSize - ((self.player.yPosition + iYShift)/self.autoMapScaleFactor + i
                 .1)) as i32 ;
@@ -101,12 +125,6 @@ impl Map {
             canvas.draw_point(p);
         }
     }
-
-    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
-                              iXShift: i16, iYShift: i16) {}
-
-    pub fn renderAutoMapPlayer(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
-                               iXShift: i16, iYShift: i16) {}
 
     pub fn addThing(&mut self, thing: Thing) {
         self.things.push(thing);
