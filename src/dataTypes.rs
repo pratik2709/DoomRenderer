@@ -77,8 +77,8 @@ enum ELINEDEFFLAGS
 pub struct Thing{
     xPosition: i16,
     yPosition: i16,
-    angleOfThing: u16,
-    typeOfThing: u16,
+    angleOfThing: i16,
+    typeOfThing: i16,
     flags: u16
 
 }

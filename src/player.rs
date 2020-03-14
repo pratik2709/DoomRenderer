@@ -1,17 +1,17 @@
 #[derive(Debug)]
 pub struct Player{
-    playerID: i32,
+    playerID: i16,
     xPosition: i16,
     yPosition: i16,
-    angleOfPlayer: i32
+    angleOfPlayer: i16
 }
 
 impl Player{
-    fn new(playerID: i32) -> Player{
+    fn new(playerID: i16) -> Player{
         Player{
             playerID,
-            xPosition:10,
-            yPosition:10,
+            xPosition:100,
+            yPosition:100,
             angleOfPlayer:0,
         }
     }

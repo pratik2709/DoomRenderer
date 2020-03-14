@@ -41,12 +41,14 @@ impl Wad {
     pub fn loadMapData(&self, wadFile: &File, mapName: String, player: Player) -> Map {
         let s= mapName.clone();
         let s1= mapName.clone();
+        let s2= mapName.clone();
         let mut lineDefCollection: Vec<LineDef> = Vec::new();
         let mut vertexCollection: Vec<Vertex> = Vec::new();
         let mut thingxCollection: Vec<Thing> = Vec::new();
         let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection, player);
         let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut map);
         let lineDefData = self.readMapLineDef(wadFile, s, &mut map);
+        let mapThingData = self.readMapThing(wadFile, s2, &mut map);
         map
 
     }
@@ -58,7 +60,6 @@ impl Wad {
             }
             match self.directories[x].lumpName == "E1M1" {
                 true => {
-                    println!("any luck");
                     return Some(x);
                 }
                 _ => continue
@@ -86,7 +87,6 @@ impl Wad {
                         let iVertexCount =
                             self.directories[newIMapIndex].lumpSize / iVertexSizeInBytes;
 
-                        println!("Check vertex count:: {}", iVertexCount);
                         for x in 0..iVertexCount {
                             map.addVertex(self.readVertexData(wadFile, self
                                 .directories[newIMapIndex]
@@ -225,8 +225,8 @@ impl Wad {
                 panic!("unable to read lump data {}", e));
         let xPosition = read2Bytes(&raw_data[0..2]) as i16;
         let yPosition = read2Bytes(&raw_data[2..4]) as i16;
-        let angleOfThing = read2Bytes(&raw_data[4..6]) as u16;
-        let typeOfThing = read2Bytes(&raw_data[6..8]) as u16;
+        let angleOfThing = read2Bytes(&raw_data[4..6]) as i16;
+        let typeOfThing = read2Bytes(&raw_data[6..8]) as i16;
         let flags = read2Bytes(&raw_data[8..10]) as u16;
         let l = Thing{
                 xPosition,
