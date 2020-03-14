@@ -45,16 +45,17 @@ impl Wad {
         let mut lineDefCollection: Vec<LineDef> = Vec::new();
         let mut vertexCollection: Vec<Vertex> = Vec::new();
         let mut thingxCollection: Vec<Thing> = Vec::new();
-        let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection, player);
+        let mut nodeCollection: Vec<Node> = Vec::new();
+        let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection,
+                               nodeCollection, player);
         let vertexMapData = self.readVertexMapData(wadFile, &mut map);
         let lineDefData = self.readMapLineDef(wadFile, &mut map);
         let mapThingData = self.readMapThing(wadFile, &mut map);
+        let nodeData = self.readMapNodes(wadFile, &mut map);
         map
     }
 
     pub fn findMapIndex(&self, map: &mut Map) -> Option<usize> {
-
-
         match map.iLumpIndex {
             Some(m) => Some(m as usize),
             None => {
@@ -242,6 +243,88 @@ impl Wad {
             angleOfThing,
             typeOfThing,
             flags,
+        };
+        l
+    }
+
+
+    pub fn readMapNodes(&self, wadFile: &File, map: &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(map);
+
+        match iMapIndex {
+            None => false,
+            mapName => {
+                let mut newIMapIndex = iMapIndex.unwrap();
+                let vertexString = String::from("NODES");
+                newIMapIndex += EMAPSLUMPSINDEX::ENODES as usize;
+                match &self.directories[newIMapIndex].lumpName {
+                    vertexString => {
+                        let iThingSizeInBytes = mem::size_of::<Node>();
+
+                        //not understanding this
+                        let iThingCount =
+                            self.directories[newIMapIndex].lumpSize / iThingSizeInBytes;
+
+                        for x in 0..iThingCount {
+                            map.addNodes(self.readNodesData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iThingSizeInBytes));
+                        }
+                    }
+                }
+                false
+            }
+        };
+
+
+        true
+    }
+
+
+    pub fn readNodesData(&self, mut file: &File, offset: usize) -> Node {
+        file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
+            panic!("unable to node data {}", e));
+
+        let mut raw_data: [u8; 28] = [0; 28];
+        file.read_exact(&mut raw_data)
+            .unwrap_or_else(|e|
+                panic!("unable to read lump data {}", e));
+        let xPartition = read2Bytes(&raw_data[0..2]) as i16;
+        let yPartition = read2Bytes(&raw_data[2..4]) as i16;
+        let changeXPartition = read2Bytes(&raw_data[4..6]) as i16;
+        let changeYPartition = read2Bytes(&raw_data[6..8]) as i16;
+
+        let rightBoxTop = read2Bytes(&raw_data[8..10]) as i16;
+        let rightBoxBottom = read2Bytes(&raw_data[10..12]) as i16;
+        let rightBoxLeft = read2Bytes(&raw_data[12..14]) as i16;
+        let rightBoxRight = read2Bytes(&raw_data[14..16]) as i16;
+
+        let leftBoxTop = read2Bytes(&raw_data[16..18]) as i16;
+        let leftBoxBottom = read2Bytes(&raw_data[18..20]) as i16;
+        let leftBoxLeft = read2Bytes(&raw_data[20..22]) as i16;
+        let leftBoxRight = read2Bytes(&raw_data[22..24]) as i16;
+
+        let rightChildID = read2Bytes(&raw_data[24..26]) as u16;
+        let leftChildID = read2Bytes(&raw_data[26..28]) as u16;
+
+        let l = Node {
+            xPartition,
+            yPartition,
+            changeXPartition,
+            changeYPartition,
+
+            rightBoxTop,
+            rightBoxBottom,
+            rightBoxLeft,
+            rightBoxRight,
+
+            leftBoxTop,
+            leftBoxBottom,
+            leftBoxLeft,
+            leftBoxRight,
+
+            rightChildID,
+            leftChildID,
         };
         l
     }

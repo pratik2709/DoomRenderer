@@ -10,13 +10,16 @@ pub struct Map {
     lineDefs: Vec<LineDef>,
     things: Vec<Thing>,
     player: Player,
-    iLumpIndex: Option<u32>
+    iLumpIndex: Option<u32>,
+    nodes: Vec<Node>
 
 }
 
 impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
-               lineDefs: Vec<LineDef>, things: Vec<Thing>, player: Player,
+               lineDefs: Vec<LineDef>, things: Vec<Thing>,
+               nodes: Vec<Node>,
+               player: Player,
     )
                -> Map {
         Map {
@@ -30,6 +33,7 @@ impl Map {
             lineDefs,
             things,
             player,
+            nodes,
             iLumpIndex: None
         }
     }
@@ -141,7 +145,16 @@ impl Map {
         self.things.push(thing);
     }
 
+    pub fn addNodes(&mut self, node: Node) {
+
+        self.nodes.push(node);
+    }
+
     pub fn setLumpIndex(&mut self, iIndex: u32){
         self.iLumpIndex = Some(iIndex);
+    }
+
+    pub fn remapXToScreen(&self, xMapPosition: i16) -> i32{
+        ((xMapPosition + (-self.xMin)) / self.autoMapScaleFactor) as i32
     }
 }

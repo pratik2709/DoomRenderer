@@ -83,3 +83,24 @@ pub struct Thing{
 
 }
 
+#[derive(Debug)]
+pub struct Node{
+    xPartition: i16,
+    yPartition: i16,
+    changeXPartition: i16,
+    changeYPartition: i16,
+
+    rightBoxTop: i16,
+    rightBoxBottom: i16,
+    rightBoxLeft: i16,
+    rightBoxRight: i16,
+
+    leftBoxTop: i16,
+    leftBoxBottom: i16,
+    leftBoxLeft: i16,
+    leftBoxRight: i16,
+
+    rightChildID: u16,
+    leftChildID: u16,
+}
+
