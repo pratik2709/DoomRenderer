@@ -60,26 +60,35 @@ impl Map {
         let iXShift = -self.xMin;
         let iYShift = -self.yMin;
 
-        self.renderAutoMapWalls(canvas, iXShift, iYShift);
-    }
 
-    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
-                              iXShift: i16, iYShift: i16) {
+        let iRender = canvas.logical_size();
+        let mut iRenderXSize = iRender.0 as i16;
+        let mut iRenderYSize = iRender.1 as i16;
+
+        iRenderXSize -= 1;
+        iRenderYSize -= 1;
+
         canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
         for line in &self.lineDefs {
             let vStart = self.vertexes[line.startVertex as usize];
             let vEnd = self.vertexes[line.endVertex as usize];
             let point1 = sdl2::rect::Point::new(((vStart.xPosition + iXShift) / self
                 .autoMapScaleFactor) as i32,
-                                                ((vStart.yPosition + iYShift) / self
+                                                (iRenderYSize - (vStart.yPosition + iYShift) / self
                                                     .autoMapScaleFactor) as i32);
 
             let point2 = sdl2::rect::Point::new(((vEnd.xPosition + iXShift) / self
                 .autoMapScaleFactor) as i32,
-                                                ((vEnd.yPosition + iYShift) / self.autoMapScaleFactor) as i32);
+                                                (iRenderYSize - (vEnd.yPosition + iYShift) / self
+                                                    .autoMapScaleFactor) as i32);
 
             canvas.draw_line(point1, point2);
         }
+    }
+
+    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,
+                              iXShift: i16, iYShift: i16) {
+
     }
 
     pub fn renderAutoMapPlayer(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>,

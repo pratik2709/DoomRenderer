@@ -74,6 +74,10 @@ impl Game {
         self.canvas.present();
     }
 
+    pub fn init(&mut self){
+
+    }
+
     pub fn update(&mut self) {
         self.doomEngine.update();
     }
