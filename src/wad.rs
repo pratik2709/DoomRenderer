@@ -39,38 +39,45 @@ impl Wad {
     }
 
     pub fn loadMapData(&self, wadFile: &File, mapName: String, player: Player) -> Map {
-        let s= mapName.clone();
-        let s1= mapName.clone();
-        let s2= mapName.clone();
+        let s = mapName.clone();
+        let s1 = mapName.clone();
+        let s2 = mapName.clone();
         let mut lineDefCollection: Vec<LineDef> = Vec::new();
         let mut vertexCollection: Vec<Vertex> = Vec::new();
         let mut thingxCollection: Vec<Thing> = Vec::new();
         let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection, player);
-        let vertexMapData = self.readVertexMapData(wadFile, mapName, &mut map);
-        let lineDefData = self.readMapLineDef(wadFile, s, &mut map);
-        let mapThingData = self.readMapThing(wadFile, s2, &mut map);
+        let vertexMapData = self.readVertexMapData(wadFile, &mut map);
+        let lineDefData = self.readMapLineDef(wadFile, &mut map);
+        let mapThingData = self.readMapThing(wadFile, &mut map);
         map
-
     }
 
-    pub fn findMapIndex(&self, mapName: String) -> Option<usize> {
-        for x in 0..self.directories.len() {
-            if x == 10 {
-                break
-            }
-            match self.directories[x].lumpName == "E1M1" {
-                true => {
-                    return Some(x);
+    pub fn findMapIndex(&self, map: &mut Map) -> Option<usize> {
+
+
+        match map.iLumpIndex {
+            Some(m) => Some(m as usize),
+            None => {
+                for x in 0..self.directories.len() {
+                    if x == 10 {
+                        break
+                    }
+                    match self.directories[x].lumpName == map.name {
+                        true => {
+                            map.setLumpIndex(x as u32);
+                            return Some(x);
+                        }
+                        _ => continue
+                    };
                 }
-                _ => continue
-            };
+                None
+            }
         }
-        None
     }
 
-    pub fn readVertexMapData(&self, wadFile: &File, mapName: String, map:
-    &mut Map) -> bool{
-        let iMapIndex = self.findMapIndex(mapName);
+    pub fn readVertexMapData(&self, wadFile: &File, map:
+    &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(map);
 
         match iMapIndex {
             None => false,
@@ -114,15 +121,16 @@ impl Wad {
         let xPosition = read2Bytes(&raw_data[0..2]) as i16;
         let yPosition = read2Bytes(&raw_data[2..4]) as i16;
 
-        Vertex{
-            xPosition, yPosition
+        Vertex {
+            xPosition,
+            yPosition,
         }
     }
 
 
-    pub fn readMapLineDef(&self, wadFile: &File, mapName: String, map:
+    pub fn readMapLineDef(&self, wadFile: &File, map:
     &mut Map) -> bool {
-        let iMapIndex = self.findMapIndex(mapName);
+        let iMapIndex = self.findMapIndex(map);
 
         match iMapIndex {
             None => false,
@@ -182,8 +190,8 @@ impl Wad {
         l
     }
 
-    pub fn readMapThing(&self, wadFile: &File, mapName: String, map: &mut Map) -> bool {
-        let iMapIndex = self.findMapIndex(mapName);
+    pub fn readMapThing(&self, wadFile: &File, map: &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(map);
 
         match iMapIndex {
             None => false,
@@ -228,13 +236,13 @@ impl Wad {
         let angleOfThing = read2Bytes(&raw_data[4..6]) as i16;
         let typeOfThing = read2Bytes(&raw_data[6..8]) as i16;
         let flags = read2Bytes(&raw_data[8..10]) as u16;
-        let l = Thing{
-                xPosition,
-                yPosition,
-                angleOfThing,
-                typeOfThing,
-                flags
-            };
+        let l = Thing {
+            xPosition,
+            yPosition,
+            angleOfThing,
+            typeOfThing,
+            flags,
+        };
         l
     }
 }

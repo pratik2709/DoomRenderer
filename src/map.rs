@@ -10,6 +10,7 @@ pub struct Map {
     lineDefs: Vec<LineDef>,
     things: Vec<Thing>,
     player: Player,
+    iLumpIndex: Option<u32>
 
 }
 
@@ -29,6 +30,7 @@ impl Map {
             lineDefs,
             things,
             player,
+            iLumpIndex: None
         }
     }
 
@@ -137,5 +139,9 @@ impl Map {
             }
         }
         self.things.push(thing);
+    }
+
+    pub fn setLumpIndex(&mut self, iIndex: u32){
+        self.iLumpIndex = Some(iIndex);
     }
 }
