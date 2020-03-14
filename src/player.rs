@@ -1,8 +1,8 @@
 #[derive(Debug)]
 pub struct Player{
     playerID: i32,
-    xPosition: i32,
-    yPosition: i32,
+    xPosition: i16,
+    yPosition: i16,
     angleOfPlayer: i32
 }
 
