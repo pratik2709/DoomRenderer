@@ -8,12 +8,11 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Game {
-        let doomEngine = DoomEngine::new();
         let renderWidth = 1280;
         let renderHeight = 800;
         let sdl = sdl2::init().unwrap();
         let video_subsystem = sdl.video().unwrap();
-        let window = video_subsystem.window(doomEngine.getName(),
+        let window = video_subsystem.window(DoomEngine::getName(),
                                             renderWidth,
                                             renderHeight)
             .position_centered()
@@ -23,8 +22,10 @@ impl Game {
 
         //Canvas:
         // Manages and owns a target (Surface or Window) and allows drawing in it.
-        let mut canvas = window.into_canvas().build().map_err(|e| e.to_string()).unwrap();
-        canvas.set_logical_size(doomEngine.renderWidth, doomEngine.renderHeight);
+        let mut canvas: sdl2::render::Canvas<sdl2::video::Window> = window.into_canvas()
+            .build().map_err(|e| e.to_string()).unwrap();
+        let doomEngine = DoomEngine::new(&mut canvas);
+
         Game {
             renderWidth,
             renderHeight,

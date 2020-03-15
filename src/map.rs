@@ -20,7 +20,7 @@ impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
                lineDefs: Vec<LineDef>, things: Vec<Thing>,
                nodes: Vec<Node>,
-               player: Player,canvas: sdl2::render::Canvas<sdl2::video::Window>
+               player: Player,canvas: &mut sdl2::render::Canvas<sdl2::video::Window>
     )
                -> Map {
         let iRender = canvas.logical_size();

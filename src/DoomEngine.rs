@@ -6,18 +6,21 @@ pub struct DoomEngine {
 }
 
 impl DoomEngine {
-    pub fn new() -> DoomEngine {
+    pub fn new(canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) -> DoomEngine{
         let wadFile = Wad::loadFileUsingPath(DoomEngine::getFileName());
         let w = Wad::getWadData(&wadFile);
         let mapName = String::from("E1M1");
         let player = Player::new(1);
-        let mapData = w.loadMapData(&wadFile, mapName, player);
+        let renderWidth = 320;
+        let renderHeight = 240;
+        canvas.set_logical_size(renderWidth, renderHeight);
+        let mapData = w.loadMapData(&wadFile, mapName, player, canvas);
 
 
         DoomEngine {
             isOver: false,
-            renderWidth: 320,
-            renderHeight: 200,
+            renderWidth,
+            renderHeight,
             map: mapData,
         }
     }
@@ -49,7 +52,7 @@ impl DoomEngine {
         self.isOver
     }
 
-    pub fn getName(&self) -> &'static str {
+    pub fn getName() -> &'static str {
         "DIYDoom"
     }
 

@@ -38,7 +38,10 @@ impl Wad {
         wadFile
     }
 
-    pub fn loadMapData(&self, wadFile: &File, mapName: String, player: Player) -> Map {
+    pub fn loadMapData(&self, wadFile: &File,
+                       mapName: String,
+                       player: Player, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) ->
+                                                                                                                   Map {
         let s = mapName.clone();
         let s1 = mapName.clone();
         let s2 = mapName.clone();
@@ -47,7 +50,7 @@ impl Wad {
         let mut thingxCollection: Vec<Thing> = Vec::new();
         let mut nodeCollection: Vec<Node> = Vec::new();
         let mut map = Map::new(s1, vertexCollection, lineDefCollection, thingxCollection,
-                               nodeCollection, player);
+                               nodeCollection, player, canvas);
         let vertexMapData = self.readVertexMapData(wadFile, &mut map);
         let lineDefData = self.readMapLineDef(wadFile, &mut map);
         let mapThingData = self.readMapThing(wadFile, &mut map);
