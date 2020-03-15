@@ -40,7 +40,7 @@ impl Wad {
 
     pub fn loadMapData(&self, wadFile: &File,
                        mapName: String,
-                       player: Player, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) ->
+                       player: Player, canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>) ->
                                                                                                                    Map {
         let s = mapName.clone();
         let s1 = mapName.clone();

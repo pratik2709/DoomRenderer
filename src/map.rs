@@ -1,4 +1,3 @@
-#[derive(Debug)]
 pub struct Map {
     name: String,
     xMin: i16,
@@ -14,16 +13,17 @@ pub struct Map {
     nodes: Vec<Node>,
     iRenderXSize: i16,
     iRenderYSize: i16,
+    canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>
 }
 
 impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
                lineDefs: Vec<LineDef>, things: Vec<Thing>,
                nodes: Vec<Node>,
-               player: Player,canvas: &mut sdl2::render::Canvas<sdl2::video::Window>
+               player: Player, canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>
     )
                -> Map {
-        let iRender = canvas.logical_size();
+        let iRender = canvas.borrow_mut().logical_size();
         let mut iRenderXSize = iRender.0 as i16;
         let mut iRenderYSize = iRender.1 as i16;
         iRenderXSize -= 1;
@@ -43,7 +43,8 @@ impl Map {
             nodes,
             iLumpIndex: None,
             iRenderXSize,
-            iRenderYSize
+            iRenderYSize,
+            canvas
         }
     }
 
@@ -71,21 +72,18 @@ impl Map {
         self.lineDefs.push(linedef);
     }
 
-    pub fn renderAutoMap(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
+    pub fn renderAutoMap(&mut self) {
         let iXShift = -self.xMin;
         let iYShift = -self.yMin;
 
-        self.renderAutoMapWalls(canvas);
+        self.renderAutoMapWalls();
 
-        self.renderAutoMapPlayer(canvas);
-
-
+        self.renderAutoMapPlayer();
     }
 
-    pub fn renderAutoMapWalls(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
+    pub fn renderAutoMapWalls(&mut self) {
 
-
-        canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
         for line in &self.lineDefs {
             let vStart = self.vertexes[line.startVertex as usize];
             let vEnd = self.vertexes[line.endVertex as usize];
@@ -97,14 +95,13 @@ impl Map {
 
             let point2 = sdl2::rect::Point::new(x2, y2);
 
-            canvas.draw_line(point1, point2);
+            self.canvas.borrow_mut().draw_line(point1, point2);
         }
     }
 
-    pub fn renderAutoMapPlayer(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
+    pub fn renderAutoMapPlayer(&mut self) {
 
-
-        canvas.set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
 
         let mut direction = vec![(-1, -1), (0, -1), (1, -1),
                                  (-1, 0), (0, 0), (1, 0),
@@ -115,8 +112,12 @@ impl Map {
             let y = self.remapYToScreen(self.player.yPosition) + i.1;
 
             let pp = sdl2::rect::Point::new(x,y);
-            canvas.draw_point(pp);
+            self.canvas.borrow_mut().draw_point(pp);
         }
+
+    }
+
+    pub fn renderAutoMapNode(){
 
     }
 

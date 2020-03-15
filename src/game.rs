@@ -2,7 +2,7 @@ pub struct Game {
     renderWidth: u32,
     renderHeight: u32,
     sdl: sdl2::Sdl,
-    canvas: sdl2::render::Canvas<sdl2::video::Window>,
+    canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>,
     doomEngine: DoomEngine,
 }
 
@@ -24,13 +24,15 @@ impl Game {
         // Manages and owns a target (Surface or Window) and allows drawing in it.
         let mut canvas: sdl2::render::Canvas<sdl2::video::Window> = window.into_canvas()
             .build().map_err(|e| e.to_string()).unwrap();
-        let doomEngine = DoomEngine::new(&mut canvas);
+        let rcCanvas = Rc::new(RefCell::new(canvas));
+        let rcCanvas1 = Rc::clone(&rcCanvas);
+        let doomEngine = DoomEngine::new(rcCanvas1);
 
         Game {
             renderWidth,
             renderHeight,
             sdl,
-            canvas,
+            canvas:rcCanvas,
             doomEngine,
         }
     }
@@ -69,10 +71,12 @@ impl Game {
     }
 
     pub fn render(&mut self) {
-        self.canvas.set_draw_color(Color::RGB(0, 0, 255));
-        self.canvas.clear();
-        self.doomEngine.render(&mut self.canvas);
-        self.canvas.present();
+        println!("hereree");
+
+        self.canvas.borrow_mut().set_draw_color(Color::RGB(0, 0, 255));
+        self.canvas.borrow_mut().clear();
+        self.doomEngine.render();
+        self.canvas.borrow_mut().present();
     }
 
     pub fn init(&mut self){

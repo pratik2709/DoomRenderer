@@ -15,6 +15,8 @@ use sdl2::keyboard::Keycode;
 use std::ops::Not;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 extern crate sdl2;
 

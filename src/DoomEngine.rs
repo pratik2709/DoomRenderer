@@ -6,14 +6,16 @@ pub struct DoomEngine {
 }
 
 impl DoomEngine {
-    pub fn new(canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) -> DoomEngine{
+    pub fn new(mut canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>) -> DoomEngine{
         let wadFile = Wad::loadFileUsingPath(DoomEngine::getFileName());
         let w = Wad::getWadData(&wadFile);
         let mapName = String::from("E1M1");
         let player = Player::new(1);
         let renderWidth = 320;
         let renderHeight = 240;
-        canvas.set_logical_size(renderWidth, renderHeight);
+
+        canvas.borrow_mut().set_logical_size(renderWidth, renderHeight);
+
         let mapData = w.loadMapData(&wadFile, mapName, player, canvas);
 
 
@@ -31,8 +33,8 @@ impl DoomEngine {
         "./DOOM1.wad"
     }
 
-    pub fn render(&mut self, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>) {
-        self.map.renderAutoMap(canvas);
+    pub fn render(&mut self) {
+        self.map.renderAutoMap();
     }
 
     pub fn keyPressed(&self) {
