@@ -71,9 +71,8 @@ impl Game {
     }
 
     pub fn render(&mut self) {
-        println!("hereree");
 
-        self.canvas.borrow_mut().set_draw_color(Color::RGB(0, 0, 255));
+        self.canvas.borrow_mut().set_draw_color(Color::RGB(0, 0, 0));
         self.canvas.borrow_mut().clear();
         self.doomEngine.render();
         self.canvas.borrow_mut().present();

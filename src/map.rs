@@ -79,6 +79,7 @@ impl Map {
         self.renderAutoMapWalls();
 
         self.renderAutoMapPlayer();
+        self.renderAutoMapNode();
     }
 
     pub fn renderAutoMapWalls(&mut self) {
@@ -117,8 +118,25 @@ impl Map {
 
     }
 
-    pub fn renderAutoMapNode(){
+    pub fn renderAutoMapNode(&mut self){
+        let node = self.nodes.last().unwrap();
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 255, 0));
 
+
+        self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.rightBoxLeft),
+        self.remapYToScreen(node.rightBoxTop),
+                  (self.remapXToScreen(node.rightBoxRight)
+                      - self.remapXToScreen(node.rightBoxLeft) + 1) as u32,
+                  (self.remapYToScreen(node.rightBoxBottom)
+                      - self.remapYToScreen(node.rightBoxTop) + 1) as u32));
+
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
+        self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.leftBoxLeft),
+        self.remapYToScreen(node.leftBoxTop),
+                  (self.remapXToScreen(node.leftBoxRight)
+                      - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
+                  (self.remapYToScreen(node.leftBoxBottom)
+                      - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
     }
 
     pub fn addThing(&mut self, thing: Thing) {
