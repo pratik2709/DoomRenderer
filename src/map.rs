@@ -13,14 +13,14 @@ pub struct Map {
     nodes: Vec<Node>,
     iRenderXSize: i16,
     iRenderYSize: i16,
-    canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>
+    canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>,
 }
 
 impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
                lineDefs: Vec<LineDef>, things: Vec<Thing>,
                nodes: Vec<Node>,
-               player: Player, canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>
+               player: Player, canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>,
     )
                -> Map {
         let iRender = canvas.borrow_mut().logical_size();
@@ -44,7 +44,7 @@ impl Map {
             iLumpIndex: None,
             iRenderXSize,
             iRenderYSize,
-            canvas
+            canvas,
         }
     }
 
@@ -83,7 +83,6 @@ impl Map {
     }
 
     pub fn renderAutoMapWalls(&mut self) {
-
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 255, 255));
         for line in &self.lineDefs {
             let vStart = self.vertexes[line.startVertex as usize];
@@ -101,46 +100,43 @@ impl Map {
     }
 
     pub fn renderAutoMapPlayer(&mut self) {
-
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
 
         let mut direction = vec![(-1, -1), (0, -1), (1, -1),
                                  (-1, 0), (0, 0), (1, 0),
                                  (-1, 1), (0, 1), (1, 1)];
 
-        for i in &direction{
+        for i in &direction {
             let x = self.remapXToScreen(self.player.xPosition) + i.0;
             let y = self.remapYToScreen(self.player.yPosition) + i.1;
 
-            let pp = sdl2::rect::Point::new(x,y);
+            let pp = sdl2::rect::Point::new(x, y);
             self.canvas.borrow_mut().draw_point(pp);
         }
-
     }
 
-    pub fn renderAutoMapNode(&mut self){
+    pub fn renderAutoMapNode(&mut self) {
         let node = self.nodes.last().unwrap();
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 255, 0));
 
 
         self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.rightBoxLeft),
-        self.remapYToScreen(node.rightBoxTop),
-                  (self.remapXToScreen(node.rightBoxRight)
-                      - self.remapXToScreen(node.rightBoxLeft) + 1) as u32,
-                  (self.remapYToScreen(node.rightBoxBottom)
-                      - self.remapYToScreen(node.rightBoxTop) + 1) as u32));
+                                                     self.remapYToScreen(node.rightBoxTop),
+                                                     (self.remapXToScreen(node.rightBoxRight)
+                                                         - self.remapXToScreen(node.rightBoxLeft) + 1) as u32,
+                                                     (self.remapYToScreen(node.rightBoxBottom)
+                                                         - self.remapYToScreen(node.rightBoxTop) + 1) as u32));
 
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
         self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.leftBoxLeft),
-        self.remapYToScreen(node.leftBoxTop),
-                  (self.remapXToScreen(node.leftBoxRight)
-                      - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
-                  (self.remapYToScreen(node.leftBoxBottom)
-                      - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
+                                                     self.remapYToScreen(node.leftBoxTop),
+                                                     (self.remapXToScreen(node.leftBoxRight)
+                                                         - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
+                                                     (self.remapYToScreen(node.leftBoxBottom)
+                                                         - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
     }
 
     pub fn addThing(&mut self, thing: Thing) {
-
         let pid = self.player.playerID;
         match thing.typeOfThing {
             pid => {
@@ -153,19 +149,18 @@ impl Map {
     }
 
     pub fn addNodes(&mut self, node: Node) {
-
         self.nodes.push(node);
     }
 
-    pub fn setLumpIndex(&mut self, iIndex: u32){
+    pub fn setLumpIndex(&mut self, iIndex: u32) {
         self.iLumpIndex = Some(iIndex);
     }
 
-    pub fn remapXToScreen(&self, xMapPosition: i16) -> i32{
+    pub fn remapXToScreen(&self, xMapPosition: i16) -> i32 {
         ((xMapPosition + (-self.xMin)) / self.autoMapScaleFactor) as i32
     }
 
-    pub fn remapYToScreen(&self, yMapPosition: i16) -> i32{
+    pub fn remapYToScreen(&self, yMapPosition: i16) -> i32 {
         (self.iRenderYSize - ((yMapPosition + (-self.yMin)) / self.autoMapScaleFactor)) as i32
     }
 }
