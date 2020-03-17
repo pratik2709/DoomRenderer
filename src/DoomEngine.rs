@@ -6,7 +6,7 @@ pub struct DoomEngine {
 }
 
 impl DoomEngine {
-    pub fn new(mut canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>) -> DoomEngine{
+    pub fn new(mut canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>) -> DoomEngine {
         let wadFile = Wad::loadFileUsingPath(DoomEngine::getFileName());
         let w = Wad::getWadData(&wadFile);
         let mapName = String::from("E1M1");

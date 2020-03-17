@@ -21,13 +21,13 @@ pub struct Header {
 }
 
 #[derive(Debug)]
-pub struct Wad{
+pub struct Wad {
     header: Header,
-    directories: Vec<Directory>
+    directories: Vec<Directory>,
 }
 
 #[derive(Debug)]
-pub struct LineDef{
+pub struct LineDef {
     startVertex: u16,
     endVertex: u16,
     flags: u16,
@@ -39,7 +39,7 @@ pub struct LineDef{
 }
 
 #[derive(Debug, Clone, Copy)]
-pub struct Vertex{
+pub struct Vertex {
     xPosition: i16,
     yPosition: i16,
 }
@@ -57,7 +57,7 @@ enum EMAPSLUMPSINDEX
     ESECTORS,
     EREJECT,
     EBLOCKMAP,
-    ECOUNT
+    ECOUNT,
 }
 
 enum ELINEDEFFLAGS
@@ -70,21 +70,20 @@ enum ELINEDEFFLAGS
     ESECRET = 16,
     ESOUNDBLOCK = 32,
     EDONTDRAW = 64,
-    EDRAW = 128
+    EDRAW = 128,
 }
 
 #[derive(Debug)]
-pub struct Thing{
+pub struct Thing {
     xPosition: i16,
     yPosition: i16,
     angleOfThing: i16,
     typeOfThing: i16,
-    flags: u16
-
+    flags: u16,
 }
 
 #[derive(Debug)]
-pub struct Node{
+pub struct Node {
     xPartition: i16,
     yPartition: i16,
     changeXPartition: i16,

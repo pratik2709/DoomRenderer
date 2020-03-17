@@ -32,7 +32,7 @@ impl Game {
             renderWidth,
             renderHeight,
             sdl,
-            canvas:rcCanvas,
+            canvas: rcCanvas,
             doomEngine,
         }
     }
@@ -67,20 +67,16 @@ impl Game {
                 break 'main
             }
         }
-
     }
 
     pub fn render(&mut self) {
-
         self.canvas.borrow_mut().set_draw_color(Color::RGB(0, 0, 0));
         self.canvas.borrow_mut().clear();
         self.doomEngine.render();
         self.canvas.borrow_mut().present();
     }
 
-    pub fn init(&mut self){
-
-    }
+    pub fn init(&mut self) {}
 
     pub fn update(&mut self) {
         self.doomEngine.update();

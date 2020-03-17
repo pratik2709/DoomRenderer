@@ -5,7 +5,7 @@ impl Header {
         file.seek(SeekFrom::Start(0)).unwrap_or_else(|e|
             panic!("unable to seek from the start od the file {}", e));
 
-        let mut header_raw: [u8; 12] = [0;12];
+        let mut header_raw: [u8; 12] = [0; 12];
         file.read_exact(&mut header_raw).unwrap_or_else(|e|
             panic!("unable to read the WAD header {}", e));
 
@@ -26,14 +26,14 @@ impl Header {
         let directoryOffset: usize = u8_to_u32(&header_raw[8..12]) as usize;
 
 
-        Header{
+        Header {
             wadType,
             directoryCount: num_lumps,
             directoryOffset,
         }
     }
 
-    pub fn getHeader(&self) -> usize{
+    pub fn getHeader(&self) -> usize {
         self.directoryOffset
     }
 }
