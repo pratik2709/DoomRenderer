@@ -163,4 +163,12 @@ impl Map {
     pub fn remapYToScreen(&self, yMapPosition: i16) -> i32 {
         (self.iRenderYSize - ((yMapPosition + (-self.yMin)) / self.autoMapScaleFactor)) as i32
     }
+
+    pub fn isPointOnLeftSide(&self, xPosition: i16, yPosition: i16, nodeID: usize) -> bool{
+        let dx = xPosition - self.nodes[nodeID].xPartition;
+        let dy = yPosition - self.nodes[nodeID].yPartition;
+
+        ((dx * self.nodes[nodeID].changeYPartition)
+            - (dy * self.nodes[nodeID].changeXPartition)) <= 0
+    }
 }
