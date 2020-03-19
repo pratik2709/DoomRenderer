@@ -171,4 +171,12 @@ impl Map {
         ((dx * self.nodes[nodeID].changeYPartition)
             - (dy * self.nodes[nodeID].changeXPartition)) <= 0
     }
+
+    pub fn renderBSPNodes(nodeID: i32){
+
+    }
+
+    pub fn renderSubsector(subSectorID: i32){
+
+    }
 }
