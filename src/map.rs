@@ -16,7 +16,9 @@ pub struct Map {
     canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>,
 }
 
-impl Map {
+
+impl  Map {
+
     pub fn new(name: String, vertexes: Vec<Vertex>,
                lineDefs: Vec<LineDef>, things: Vec<Thing>,
                nodes: Vec<Node>,
@@ -172,11 +174,23 @@ impl Map {
             - (dy * self.nodes[nodeID].changeXPartition)) <= 0
     }
 
-    pub fn renderBSPNodes(nodeID: i32){
+    pub fn renderBSPNodes(&self, nodeID: i16){
+        let result = nodeID & SUBSECTORIDENTIFIER;
+        match result{
+            1 => self.renderSubsector(nodeID & (!SUBSECTORIDENTIFIER)),
+            0 => {
+                let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
+                self.player.yPosition, nodeID as usize);
+
+//                match isOnLeft {
+//
+//                }
+            }
+        }
 
     }
 
-    pub fn renderSubsector(subSectorID: i32){
+    pub fn renderSubsector(&self, subSectorID: i16){
 
     }
 }

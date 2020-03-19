@@ -20,6 +20,8 @@ use std::cell::RefCell;
 
 extern crate sdl2;
 
+const SUBSECTORIDENTIFIER: i16 = 10;
+
 fn main() {
     let mut game = Game::new();
     game.init();
