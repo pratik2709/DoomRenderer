@@ -17,8 +17,7 @@ pub struct Map {
 }
 
 
-impl  Map {
-
+impl Map {
     pub fn new(name: String, vertexes: Vec<Vertex>,
                lineDefs: Vec<LineDef>, things: Vec<Thing>,
                nodes: Vec<Node>,
@@ -166,7 +165,7 @@ impl  Map {
         (self.iRenderYSize - ((yMapPosition + (-self.yMin)) / self.autoMapScaleFactor)) as i32
     }
 
-    pub fn isPointOnLeftSide(&self, xPosition: i16, yPosition: i16, nodeID: usize) -> bool{
+    pub fn isPointOnLeftSide(&self, xPosition: i16, yPosition: i16, nodeID: usize) -> bool {
         let dx = xPosition - self.nodes[nodeID].xPartition;
         let dy = yPosition - self.nodes[nodeID].yPartition;
 
@@ -174,23 +173,20 @@ impl  Map {
             - (dy * self.nodes[nodeID].changeXPartition)) <= 0
     }
 
-    pub fn renderBSPNodes(&self, nodeID: i16){
+    pub fn renderBSPNodes(&self, nodeID: i16) {
         let result = nodeID & SUBSECTORIDENTIFIER;
-        match result{
+        match result {
             1 => self.renderSubsector(nodeID & (!SUBSECTORIDENTIFIER)),
             0 => {
                 let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
-                self.player.yPosition, nodeID as usize);
+                                                      self.player.yPosition, nodeID as usize);
 
 //                match isOnLeft {
 //
 //                }
             }
         }
-
     }
 
-    pub fn renderSubsector(&self, subSectorID: i16){
-
-    }
+    pub fn renderSubsector(&self, subSectorID: i16) {}
 }
