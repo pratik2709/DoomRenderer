@@ -17,10 +17,12 @@ use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use std::rc::Rc;
 use std::cell::RefCell;
+use core::ops::BitAnd;
 
 extern crate sdl2;
+extern crate hex;
 
-const SUBSECTORIDENTIFIER: i16 = 10;
+const SUBSECTORIDENTIFIER:String = hex::encode("Hello world!");
 
 fn main() {
     let mut game = Game::new();

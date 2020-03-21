@@ -174,7 +174,7 @@ impl Map {
     }
 
     pub fn renderBSPNodes(&self, nodeID: i16) {
-        let result = nodeID & SUBSECTORIDENTIFIER;
+        let result = nodeID & hex::decode(SUBSECTORIDENTIFIER);
         match result {
             1 => self.renderSubsector(nodeID & (!SUBSECTORIDENTIFIER)),
             0 => {
