@@ -22,7 +22,7 @@ use core::ops::BitAnd;
 extern crate sdl2;
 extern crate hex;
 
-const SUBSECTORIDENTIFIER:String = hex::encode("Hello world!");
+const SUBSECTORIDENTIFIER: i64 = 1000000000000000;
 
 fn main() {
     let mut game = Game::new();

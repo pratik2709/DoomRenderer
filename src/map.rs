@@ -80,7 +80,7 @@ impl Map {
         self.renderAutoMapWalls();
 
         self.renderAutoMapPlayer();
-        self.renderAutoMapNode();
+        self.renderBSPNodesMain();
     }
 
     pub fn renderAutoMapWalls(&mut self) {
@@ -166,27 +166,38 @@ impl Map {
     }
 
     pub fn isPointOnLeftSide(&self, xPosition: i16, yPosition: i16, nodeID: usize) -> bool {
-        let dx = xPosition - self.nodes[nodeID].xPartition;
-        let dy = yPosition - self.nodes[nodeID].yPartition;
+        let dx: i16 = xPosition - self.nodes[nodeID].xPartition;
+        let dy: i16 = yPosition - self.nodes[nodeID].yPartition;
 
-        ((dx * self.nodes[nodeID].changeYPartition)
-            - (dy * self.nodes[nodeID].changeXPartition)) <= 0
+        let temp1: i32 = (dx as i32 * self.nodes[nodeID].changeYPartition as i32) ;
+        let temp2: i32 = (dy as i32 * self.nodes[nodeID].changeXPartition as i32) ;
+        (temp1
+            - temp2) <= 0
     }
 
-    pub fn renderBSPNodes(&self, nodeID: i16) {
-        let result = nodeID & hex::decode(SUBSECTORIDENTIFIER);
+    pub fn renderBSPNodesMain(&self) {
+        self.renderBSPNodes(self.nodes.len() - 1);
+    }
+
+    pub fn renderBSPNodes(&self, nodeID: usize) {
+        let newNodeID = nodeID as i64;
+        let result = newNodeID & SUBSECTORIDENTIFIER;
+        println!("The result is :: {}", result);
         match result {
-            1 => self.renderSubsector(nodeID & (!SUBSECTORIDENTIFIER)),
-            0 => {
+            1 => self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER)),
+            _ => {
                 let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
                                                       self.player.yPosition, nodeID as usize);
 
-//                match isOnLeft {
-//
-//                }
+                match isOnLeft {
+                    true => self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize),
+                    false => self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize)
+
+                }
             }
+
         }
     }
 
-    pub fn renderSubsector(&self, subSectorID: i16) {}
+    pub fn renderSubsector(&self, subSectorID: i64) {}
 }
