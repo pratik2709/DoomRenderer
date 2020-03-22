@@ -80,7 +80,9 @@ impl Map {
         self.renderAutoMapWalls();
 
         self.renderAutoMapPlayer();
-        self.renderBSPNodesMain();
+        self.renderAutoMapNode();
+
+//        self.renderBSPNodesMain();
     }
 
     pub fn renderAutoMapWalls(&mut self) {
@@ -135,6 +137,13 @@ impl Map {
                                                          - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
                                                      (self.remapYToScreen(node.leftBoxBottom)
                                                          - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
+
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 0, 255));
+        self.canvas.borrow_mut().draw_line(sdl2::rect::Point::new(self.remapXToScreen(node
+            .xPartition), self.remapYToScreen(node.yPartition)),
+        sdl2::rect::Point::new(self.remapXToScreen(node
+            .xPartition + node.changeXPartition),
+                               self.remapYToScreen(node.yPartition + node.changeYPartition)));
     }
 
     pub fn addThing(&mut self, thing: Thing) {
@@ -171,8 +180,7 @@ impl Map {
 
         let temp1: i32 = (dx as i32 * self.nodes[nodeID].changeYPartition as i32) ;
         let temp2: i32 = (dy as i32 * self.nodes[nodeID].changeXPartition as i32) ;
-        (temp1
-            - temp2) <= 0
+        (temp1 - temp2) <= 0
     }
 
     pub fn renderBSPNodesMain(&self) {
@@ -180,14 +188,17 @@ impl Map {
     }
 
     pub fn renderBSPNodes(&self, nodeID: usize) {
-        let newNodeID = nodeID as i64;
+        let newNodeID = nodeID as u64;
         let result = newNodeID & SUBSECTORIDENTIFIER;
-        println!("The result is :: {}", result);
+        println!("The result is :: {} , {}, {}", newNodeID, SUBSECTORIDENTIFIER, result);
         match result {
             1 => self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER)),
             _ => {
                 let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
                                                       self.player.yPosition, nodeID as usize);
+
+                println!("The result2 is :: {} , {}, {}", self.nodes[nodeID].leftChildID,
+                         self.nodes[nodeID].rightChildID, nodeID);
 
                 match isOnLeft {
                     true => self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize),
@@ -199,5 +210,5 @@ impl Map {
         }
     }
 
-    pub fn renderSubsector(&self, subSectorID: i64) {}
+    pub fn renderSubsector(&self, subSectorID: u64) {}
 }

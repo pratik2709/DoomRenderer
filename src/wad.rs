@@ -269,9 +269,14 @@ impl Wad {
                             self.directories[newIMapIndex].lumpSize / iThingSizeInBytes;
 
                         for x in 0..iThingCount {
-                            map.addNodes(self.readNodesData(wadFile, self
+                            let t = self.readNodesData(wadFile, self
                                 .directories[newIMapIndex]
-                                .lumpOffset + x * iThingSizeInBytes));
+                                .lumpOffset + x * iThingSizeInBytes);
+                            let t1 = self.readNodesData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iThingSizeInBytes);
+                            map.addNodes(t);
+                            println!("{:?}", t1);
                         }
                     }
                 }
