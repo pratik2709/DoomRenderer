@@ -82,7 +82,7 @@ impl Map {
         self.renderAutoMapPlayer();
         self.renderAutoMapNode();
 
-//        self.renderBSPNodesMain();
+        self.renderBSPNodesMain();
     }
 
     pub fn renderAutoMapWalls(&mut self) {
@@ -190,21 +190,29 @@ impl Map {
     }
 
     pub fn renderBSPNodes(&self, nodeID: usize) {
-        let newNodeID = nodeID as u64;
+        let newNodeID = nodeID as u16;
         let result = newNodeID & SUBSECTORIDENTIFIER;
         println!("The result is :: {} , {}, {}", newNodeID, SUBSECTORIDENTIFIER, result);
         match result {
-            1 => self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER)),
             _ => {
+//                self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER))
+            },
+            0 => {
                 let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
-                                                      self.player.yPosition, nodeID as usize);
+                                                      self.player.yPosition, newNodeID as usize);
 
                 println!("The result2 is :: {} , {}, {}", self.nodes[nodeID].leftChildID,
                          self.nodes[nodeID].rightChildID, nodeID);
 
                 match isOnLeft {
-                    true => self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize),
-                    false => self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize)
+                    true => {
+                        self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
+                        self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
+                    },
+                    false => {
+                        self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
+                        self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
+                    }
 
                 }
             }
