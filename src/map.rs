@@ -139,11 +139,13 @@ impl Map {
                                                          - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
 
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 0, 255));
-        self.canvas.borrow_mut().draw_line(sdl2::rect::Point::new(self.remapXToScreen(node
-            .xPartition), self.remapYToScreen(node.yPartition)),
-        sdl2::rect::Point::new(self.remapXToScreen(node
-            .xPartition + node.changeXPartition),
-                               self.remapYToScreen(node.yPartition + node.changeYPartition)));
+        let x1 = self.remapXToScreen(node.xPartition);
+        let y1 = self.remapYToScreen(node.yPartition);
+        let x2 = self.remapXToScreen(node.xPartition + node.changeXPartition);
+        let y2 = self.remapYToScreen(node.yPartition + node.changeYPartition);
+
+        self.canvas.borrow_mut().draw_line(sdl2::rect::Point::new(x1, y1),
+                                           sdl2::rect::Point::new(x2, y2));
     }
 
     pub fn addThing(&mut self, thing: Thing) {
