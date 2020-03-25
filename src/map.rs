@@ -80,7 +80,7 @@ impl Map {
         self.renderAutoMapWalls();
 
         self.renderAutoMapPlayer();
-        self.renderAutoMapNode();
+
 
         self.renderBSPNodesMain();
     }
@@ -118,8 +118,9 @@ impl Map {
         }
     }
 
-    pub fn renderAutoMapNode(&mut self) {
-        let node = self.nodes.last().unwrap();
+    pub fn renderAutoMapNode(&mut self, node: Node) {
+//        let node = self.nodes.last().unwrap();
+//        println!("getting delay");
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 255, 0));
 
 
@@ -130,6 +131,10 @@ impl Map {
                                                      (self.remapYToScreen(node.rightBoxBottom)
                                                          - self.remapYToScreen(node.rightBoxTop) + 1) as u32));
 
+//        let ten_millis = time::Duration::from_millis(1000);
+
+//        thread::sleep(ten_millis);
+
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
         self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.leftBoxLeft),
                                                      self.remapYToScreen(node.leftBoxTop),
@@ -137,6 +142,7 @@ impl Map {
                                                          - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
                                                      (self.remapYToScreen(node.leftBoxBottom)
                                                          - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
+
 
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 0, 255));
         let x1 = self.remapXToScreen(node.xPartition);
@@ -146,6 +152,7 @@ impl Map {
 
         self.canvas.borrow_mut().draw_line(sdl2::rect::Point::new(x1, y1),
                                            sdl2::rect::Point::new(x2, y2));
+
     }
 
     pub fn addThing(&mut self, thing: Thing) {
@@ -182,43 +189,51 @@ impl Map {
 
         let temp1: i32 = (dx as i32 * self.nodes[nodeID].changeYPartition as i32) ;
         let temp2: i32 = (dy as i32 * self.nodes[nodeID].changeXPartition as i32) ;
-        (temp1 - temp2) <= 0
+        let res = temp1 - temp2;
+        return  res <= 0
     }
 
-    pub fn renderBSPNodesMain(&self) {
+    pub fn renderBSPNodesMain(&mut self) {
         self.renderBSPNodes(self.nodes.len() - 1);
     }
 
-    pub fn renderBSPNodes(&self, nodeID: usize) {
+    pub fn renderBSPNodes(&mut self, nodeID: usize) {
         let newNodeID = nodeID as u16;
         let result = newNodeID & SUBSECTORIDENTIFIER;
+        let ss = SUBSECTORIDENTIFIER as i32;
+        let result2 = result as i32;
+
+//        self.renderAutoMapNode(self.nodes[nodeID].clone());
+
         println!("The result is :: {} , {}, {}", newNodeID, SUBSECTORIDENTIFIER, result);
-        match result {
-            _ => {
-//                self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER))
-            },
+        match result2 {
+
             0 => {
+                self.renderAutoMapNode(self.nodes[nodeID].clone());
                 let isOnLeft = self.isPointOnLeftSide(self.player.xPosition,
                                                       self.player.yPosition, newNodeID as usize);
 
-                println!("The result2 is :: {} , {}, {}", self.nodes[nodeID].leftChildID,
-                         self.nodes[nodeID].rightChildID, nodeID);
+                println!("The result2 is :: {} , {}, {}, {}", self.nodes[nodeID].leftChildID,
+                         self.nodes[nodeID].rightChildID, nodeID, isOnLeft);
 
                 match isOnLeft {
                     true => {
+                        println!("on left side:: {}", self.nodes[nodeID].leftChildID);
                         self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
-                        self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
                     },
                     false => {
+                        println!("on right side:: {}", self.nodes[nodeID].rightChildID);
                         self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
-                        self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
                     }
-
                 }
+            }
+            ss => {
+                println!("in subsector");
+                self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER))
             }
 
         }
     }
 
-    pub fn renderSubsector(&self, subSectorID: u64) {}
+    pub fn renderSubsector(&self, subSectorID: u16) {}
 }

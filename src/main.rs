@@ -21,6 +21,7 @@ use core::ops::BitAnd;
 
 extern crate sdl2;
 extern crate hex;
+use std::{thread, time};
 
 const SUBSECTORIDENTIFIER: u16 = 0x8000;
 

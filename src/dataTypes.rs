@@ -83,6 +83,7 @@ pub struct Thing {
 }
 
 #[derive(Debug)]
+#[derive(Clone)]
 pub struct Node {
     xPartition: i16,
     yPartition: i16,
