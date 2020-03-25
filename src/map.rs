@@ -131,9 +131,10 @@ impl Map {
                                                      (self.remapYToScreen(node.rightBoxBottom)
                                                          - self.remapYToScreen(node.rightBoxTop) + 1) as u32));
 
-//        let ten_millis = time::Duration::from_millis(1000);
+        self.canvas.borrow_mut().present();
+        let ten_millis = time::Duration::from_millis(300);
 
-//        thread::sleep(ten_millis);
+        thread::sleep(ten_millis);
 
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(255, 0, 0));
         self.canvas.borrow_mut().draw_rect(Rect::new(self.remapXToScreen(node.leftBoxLeft),
@@ -142,7 +143,8 @@ impl Map {
                                                          - self.remapXToScreen(node.leftBoxLeft) + 1) as u32,
                                                      (self.remapYToScreen(node.leftBoxBottom)
                                                          - self.remapYToScreen(node.leftBoxTop) + 1) as u32));
-
+        self.canvas.borrow_mut().present();
+        thread::sleep(ten_millis);
 
         self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 0, 255));
         let x1 = self.remapXToScreen(node.xPartition);
@@ -150,8 +152,23 @@ impl Map {
         let x2 = self.remapXToScreen(node.xPartition + node.changeXPartition);
         let y2 = self.remapYToScreen(node.yPartition + node.changeYPartition);
 
+
+
+
         self.canvas.borrow_mut().draw_line(sdl2::rect::Point::new(x1, y1),
                                            sdl2::rect::Point::new(x2, y2));
+
+
+        self.canvas.borrow_mut().present();
+        thread::sleep(ten_millis);
+
+        self.canvas.borrow_mut().set_draw_color(sdl2::pixels::Color::RGB(0, 0, 0));
+
+
+
+        self.canvas.borrow_mut().clear();
+        self.renderAutoMapWalls();
+        self.renderAutoMapPlayer();
 
     }
 
@@ -159,8 +176,8 @@ impl Map {
         let pid = self.player.playerID;
         match thing.typeOfThing {
             pid => {
-                self.player.xPosition = thing.xPosition;
-                self.player.yPosition = thing.yPosition;
+                self.player.xPosition = thing.xPosition - 3000;
+                self.player.yPosition = thing.yPosition + 600;
                 self.player.angleOfPlayer = thing.angleOfThing;
             }
         }
