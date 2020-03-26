@@ -237,16 +237,19 @@ impl Map {
                     true => {
                         println!("on left side:: {}", self.nodes[nodeID].leftChildID);
                         self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
+                        self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
                     },
                     false => {
-                        println!("on right side:: {}", self.nodes[nodeID].rightChildID);
+                        println!("on right side:: {}", self .nodes[nodeID].rightChildID);
                         self.renderBSPNodes(self.nodes[nodeID].rightChildID as usize);
+                        self.renderBSPNodes(self.nodes[nodeID].leftChildID as usize);
                     }
                 }
             }
             ss => {
                 println!("in subsector");
-                self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER))
+                self.renderSubsector(newNodeID & (!SUBSECTORIDENTIFIER));
+                return;
             }
 
         }
