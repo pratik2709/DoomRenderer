@@ -104,3 +104,14 @@ pub struct Node {
     leftChildID: u16,
 }
 
+
+pub struct SubSector {
+    segCount: u16,
+    firstSegID: u16
+
+}
+
+pub struct Seg {
+    startVertexID: u16
+}
+
