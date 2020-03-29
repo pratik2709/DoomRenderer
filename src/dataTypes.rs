@@ -112,6 +112,11 @@ pub struct SubSector {
 }
 
 pub struct Seg {
-    startVertexID: u16
+    startVertexID: u16,
+    endVertexID: u16,
+    angleOfSeg: u16,
+    lineDefID: u16,
+    directionOfSeg: u16,
+    offsetOfSeg: u16
 }
 
