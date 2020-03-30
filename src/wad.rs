@@ -331,4 +331,23 @@ impl Wad {
         };
         l
     }
+
+
+    pub fn readSubSectorData(&self, mut file: &File, offset: usize) -> Node {
+        file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
+            panic!("unable to node data {}", e));
+
+        let mut raw_data: [u8; 8] = [0; 8];
+        file.read_exact(&mut raw_data)
+            .unwrap_or_else(|e|
+                panic!("unable to read lump data {}", e));
+        let segCount = read2Bytes(&raw_data[0..2]) as u16;
+        let firstSegID = read2Bytes(&raw_data[2..4]) as u16;
+
+        let l = Node {
+            segCount,
+            firstSegID
+        };
+        l
+    }
 }
