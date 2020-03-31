@@ -344,9 +344,35 @@ impl Wad {
         let segCount = read2Bytes(&raw_data[0..2]) as u16;
         let firstSegID = read2Bytes(&raw_data[2..4]) as u16;
 
-        let l = Node {
+        let l = SubSector {
             segCount,
             firstSegID
+        };
+        l
+    }
+
+    pub fn readSegData(&self, mut file: &File, offset: usize) -> Node {
+        file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
+            panic!("unable to node data {}", e));
+
+        let mut raw_data: [u8; 12] = [0; 12];
+        file.read_exact(&mut raw_data)
+            .unwrap_or_else(|e|
+                panic!("unable to read lump data {}", e));
+        let startVertexID = read2Bytes(&raw_data[0..2]) as u16;
+        let endVertexID = read2Bytes(&raw_data[2..4]) as u16;
+        let angleOfSeg = read2Bytes(&raw_data[4..6]) as u16;
+        let lineDefID = read2Bytes(&raw_data[6..8]) as u16;
+        let directionOfSeg = read2Bytes(&raw_data[8..10]) as u16;
+        let offsetOfSeg = read2Bytes(&raw_data[10..12]) as u16;
+
+        let l = Seg {
+            startVertexID,
+            endVertexID,
+            angleOfSeg,
+            lineDefID,
+            directionOfSeg,
+            offsetOfSeg
         };
         l
     }
