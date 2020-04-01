@@ -284,6 +284,39 @@ impl Wad {
     }
 
 
+    pub fn readSubSector(&self, wadFile: &File, map: &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(map);
+
+        match iMapIndex {
+            None => false,
+            mapName => {
+                let mut newIMapIndex = iMapIndex.unwrap();
+                let vertexString = String::from("SSECTORS");
+                newIMapIndex += EMAPSLUMPSINDEX::ESSECTORS as usize;
+                match &self.directories[newIMapIndex].lumpName {
+                    vertexString => {
+                        let iThingSizeInBytes = mem::size_of::<SubSector>();
+
+                        //not understanding this
+                        let iThingCount =
+                            self.directories[newIMapIndex].lumpSize / iThingSizeInBytes;
+
+                        for x in 0..iThingCount {
+                            map.addNodes(self.readSubSectorData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iThingSizeInBytes));
+                        }
+                    }
+                }
+                false
+            }
+        };
+
+
+        true
+    }
+
+
     pub fn readNodesData(&self, mut file: &File, offset: usize) -> Node {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to node data {}", e));

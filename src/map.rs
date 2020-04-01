@@ -11,6 +11,8 @@ pub struct Map {
     player: Player,
     iLumpIndex: Option<u32>,
     nodes: Vec<Node>,
+    subSectors: Vec<SubSector>,
+    segs: Vec<Seg>,
     iRenderXSize: i16,
     iRenderYSize: i16,
     canvas: Rc<RefCell<sdl2::render::Canvas<sdl2::video::Window>>>,
@@ -186,6 +188,14 @@ impl Map {
 
     pub fn addNodes(&mut self, node: Node) {
         self.nodes.push(node);
+    }
+
+    pub fn addSubSector(&mut self, subSector: SubSector) {
+        self.subSectors.push(subSector);
+    }
+
+    pub fn addSeg(&mut self, seg: Seg) {
+        self.segs.push(seg);
     }
 
     pub fn setLumpIndex(&mut self, iIndex: u32) {
