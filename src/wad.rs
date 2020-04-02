@@ -317,6 +317,38 @@ impl Wad {
     }
 
 
+    pub fn readSeg(&self, wadFile: &File, map: &mut Map) -> bool {
+        let iMapIndex = self.findMapIndex(map);
+
+        match iMapIndex {
+            None => false,
+            mapName => {
+                let mut newIMapIndex = iMapIndex.unwrap();
+                let vertexString = String::from("SSECTORS");
+                newIMapIndex += EMAPSLUMPSINDEX::ESSECTORS as usize;
+                match &self.directories[newIMapIndex].lumpName {
+                    vertexString => {
+                        let iThingSizeInBytes = mem::size_of::<Seg>();
+
+                        //not understanding this
+                        let iThingCount =
+                            self.directories[newIMapIndex].lumpSize / iThingSizeInBytes;
+
+                        for x in 0..iThingCount {
+                            map.addNodes(self.readSegData(wadFile, self
+                                .directories[newIMapIndex]
+                                .lumpOffset + x * iThingSizeInBytes));
+                        }
+                    }
+                }
+                false
+            }
+        };
+
+
+        true
+    }
+
     pub fn readNodesData(&self, mut file: &File, offset: usize) -> Node {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to node data {}", e));
@@ -366,7 +398,7 @@ impl Wad {
     }
 
 
-    pub fn readSubSectorData(&self, mut file: &File, offset: usize) -> Node {
+    pub fn readSubSectorData(&self, mut file: &File, offset: usize) -> SubSector {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to node data {}", e));
 
@@ -384,7 +416,7 @@ impl Wad {
         l
     }
 
-    pub fn readSegData(&self, mut file: &File, offset: usize) -> Node {
+    pub fn readSegData(&self, mut file: &File, offset: usize) -> Seg {
         file.seek(SeekFrom::Start(offset as u64)).unwrap_or_else(|e|
             panic!("unable to node data {}", e));
 
